@@ -132,41 +132,52 @@ body {
 }
 
 .todo-card h3 {
-    font-size: 1.1 rem;
-    margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: #fff;
 }
 
-.todo-input-group{
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-
+.todo-input-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
 }
 
-.todo-input-group input{
-    flex:1;
-    padding: 0.5rem 0.75rem;
-    border-radius: 8px;
-    border : 1px solid rgba(225, 255, 255, 0.2);
-    background: rgba(0, 0, 0, 0.3);
-    color: #ffffff;
-    outline: none;
+.todo-input-group input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
 
+.todo-input-group input:focus {
+  border-color: #ec4899;
 }
 
 .todo-input-group button {
-  padding: 0.5rem 0.85rem;
+  padding: 0.6rem 0.9rem;
   border-radius: 8px;
   border: none;
   background: #ec4899;
   color: white;
   font-weight: bold;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
 }
 
 .todo-input-group button:hover {
   background: #db2777;
+}
+
+.todo-input-group button:active {
+  transform: scale(0.95);
 }
 
 .todo-list {
