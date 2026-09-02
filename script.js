@@ -1,3 +1,7 @@
+import './style.css';
+import confetti from 'canvas-confetti';
+
+// --- 1. CLOCK & FORMAT TOGGLE MODULE ---
 let is24Hour = localStorage.getItem('astro_clock_format') === '24';
 
 const clockElement = document.getElementById('clock');
@@ -22,7 +26,6 @@ function updateClock() {
   const hoursStr = String(hours).padStart(2, '0');
   clockElement.innerHTML = `${hoursStr}:${minutes}:${seconds}${ampmHTML}`;
 
-  // Dynamic Greeting
   if (greetingElement) {
     const hourNum = now.getHours();
     let greetingText = "Good evening, Explorer!";
@@ -34,36 +37,31 @@ function updateClock() {
 
 if (toggleBtn) {
   toggleBtn.innerText = is24Hour ? '12H' : '24H';
-
   toggleBtn.addEventListener('click', () => {
     is24Hour = !is24Hour;
     localStorage.setItem('astro_clock_format', is24Hour ? '24' : '12');
     toggleBtn.innerText = is24Hour ? '12H' : '24H';
-    updateClock(); 
+    updateClock();
   });
 }
 
 updateClock();
 setInterval(updateClock, 1000);
 
+// --- 2. NASA APOD FETCH ENGINE ---
 async function fetchNASAData() {
   const titleEl = document.getElementById('apod-title');
   const imgEl = document.getElementById('apod-img');
   const descEl = document.getElementById('apod-desc');
   const dateEl = document.getElementById('apod-date');
 
-  if (!titleEl || !imgEl || !descEl) {
-    console.error('APOD Error: Required DOM elements missing in HTML.');
-    return;
-  }
+  if (!titleEl || !imgEl || !descEl) return;
+
+  const apiKey = import.meta.env.VITE_NASA_API_KEY || 'SxQtFNDwSaUDIgtXlff7mSsY7m7wzXRa5zxC58ff';
 
   try {
-    const response = await fetch('https://api.nasa.gov/planetary/apod?api_key=SxQtFNDwSaUDIgtXlff7mSsY7m7wzXRa5zxC58ff');
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
+    const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const data = await response.json();
 
     titleEl.innerText = data.title || 'Astronomy Picture of the Day';
@@ -78,12 +76,10 @@ async function fetchNASAData() {
       imgEl.style.display = 'block';
     }
   } catch (error) {
-    console.warn('NASA API Fetch Failed. Loading fallback space image:', error);
-
+    console.warn('NASA API Fetch Failed. Loading fallback mirror:', error);
     titleEl.innerText = 'Deep Space Nebula';
-    descEl.innerText = 'An extraordinary view of starry space. (Loaded via fail-safe secondary mirror).';
+    descEl.innerText = 'An extraordinary view of starry space.';
     if (dateEl) dateEl.innerText = 'Offline Mode';
-
     imgEl.src = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop';
     imgEl.style.display = 'block';
   }
@@ -92,32 +88,34 @@ async function fetchNASAData() {
 document.addEventListener('DOMContentLoaded', fetchNASAData);
 fetchNASAData();
 
-
-
-
-fetchNASAData();
-
+// --- 3. TASK ENGINE WITH CONFETTI ---
 const todoInput = document.getElementById('todo-input');
 const todoAddBtn = document.getElementById('todo-add');
 const todoList = document.getElementById('todo-list');
 
 let tasks = JSON.parse(localStorage.getItem('astro_tasks')) || [];
 
-function renderTasks(){
-    if(!todoList) return;
-    todoList.innerHTML = '';
+function renderTasks() {
+  if (!todoList) return;
+  todoList.innerHTML = '';
 
-    tasks.forEach((task, index) =>{
-        const li = document.createElement('li');
-        li.className='todo-item';
-        li.innerHTML = `<span>${task}</span>
+  tasks.forEach((task, index) => {
+    const li = document.createElement('li');
+    li.className = 'todo-item';
+    li.innerHTML = `
+      <span>${task}</span>
       <button onclick="deleteTask(${index})">✕</button>
     `;
     todoList.appendChild(li);
-    });
+  });
 
-    localStorage.setItem('astro_tasks', JSON.stringify(tasks));
+  localStorage.setItem('astro_tasks', JSON.stringify(tasks));
 }
+
+window.deleteTask = function(index) {
+  tasks.splice(index, 1);
+  renderTasks();
+};
 
 if (todoAddBtn && todoInput) {
   todoAddBtn.addEventListener('click', () => {
@@ -126,23 +124,34 @@ if (todoAddBtn && todoInput) {
       tasks.push(text);
       todoInput.value = '';
       renderTasks();
+
+      confetti({
+        particleCount: 40,
+        spread: 60,
+        origin: { y: 0.8 },
+        colors: ['#6366f1', '#ec4899', '#8b5cf6']
+      });
     }
   });
 
   todoInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      todoAddBtn.click();
-    }
+    if (e.key === 'Enter') todoAddBtn.click();
   });
-}
-
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  renderTasks();
 }
 
 renderTasks();
 
+// --- 4. GLOBAL SEARCH HOTKEY ('/') ---
+document.addEventListener('keydown', (e) => {
+  const searchInput = document.querySelector('.search-form input');
+  if (document.activeElement === searchInput || document.activeElement === todoInput) return;
+  if (e.key === '/') {
+    e.preventDefault();
+    if (searchInput) searchInput.focus();
+  }
+});
+
+// --- 5. ANIMATED STARFIELD CANVAS ---
 const canvas = document.getElementById('starfield');
 if (canvas) {
   const ctx = canvas.getContext('2d');
@@ -175,9 +184,7 @@ if (canvas) {
       ctx.fill();
 
       star.alpha += star.speed;
-      if (star.alpha > 1 || star.alpha < 0) {
-        star.speed = -star.speed;
-      }
+      if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
     });
     requestAnimationFrame(drawStars);
   }
