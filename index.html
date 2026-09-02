@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AstroTab Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <div class="column">
+      <div class="card" id="clock-card">
+        <h1 class="clock" id="clock">00:00:00</h1>
+        <p class="greeting" id="greeting">Initializing...</p>
+      </div>
+    </div>
+
+    <div class="card">
+        <form action="https://www.google.com/search" method="GET" class="search-form" target="_blank">
+            <input type="text" name="q" placeholder="Search Google..." autocomplete="off" required />
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    
+    <div class="column">
+      <div class="card" id="nasa-card">
+        <h2>NASA Feature</h2>
+        <p>Space data placeholder...</p>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="card" id="notes-card">
+        <h2>Quick Notes</h2>
+        <p>Notes widget placeholder...</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
