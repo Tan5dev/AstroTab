@@ -14,17 +14,19 @@
 <body>
   <canvas id="starfield"></canvas>
   
-  <div class="dashboard-container">
+  <header class="top-nav">
+    <div class="brand">
+      <span class="pulse-dot"></span>
+      <span class="brand-name">ASTRO // OS</span>
+    </div>
     
-    <header class="top-nav">
-      <div class="brand">
-        <span class="pulse-dot"></span>
-        <span class="brand-name">ASTRO // OS</span>
-      </div>
-      <div class="quick-links" id="bookmarks-bar">
-      </div>
+    <div class="nav-center">
+      <div class="quick-links" id="bookmarks-bar"></div>
       <button id="add-bookmark-btn" class="shortcut-btn add-btn" title="Add Bookmark"><i class="fas fa-plus"></i></button>
-    </header>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
 
     <div class="dash-col">
       <div class="card" id="clock-card">
@@ -70,6 +72,11 @@
           </select>
           <button id="sound-toggle" class="sound-btn"><i class="fas fa-play"></i></button>
         </div>
+        <div class="volume-wrapper">
+          <i class="fas fa-volume-low vol-icon"></i>
+          <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" class="volume-slider">
+          <i class="fas fa-volume-high vol-icon"></i>
+        </div>
       </div>
     </div>
 
@@ -110,6 +117,18 @@
       </div>
     </div>
 
+  </div>
+
+  <div id="bm-modal" class="modal">
+    <div class="modal-card">
+      <span class="modal-close" id="bm-modal-close">&times;</span>
+      <h3 id="bm-modal-title">Add Bookmark</h3>
+      <div class="modal-form">
+        <input type="text" id="bm-name-input" placeholder="Bookmark Name (e.g., GitHub)" autocomplete="off" />
+        <input type="url" id="bm-url-input" placeholder="URL (e.g., https://github.com)" autocomplete="off" />
+        <button id="bm-save-btn">Save Bookmark</button>
+      </div>
+    </div>
   </div>
 
   <div id="apod-modal" class="modal">

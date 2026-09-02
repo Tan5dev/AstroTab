@@ -1,241 +1,205 @@
-import './style.css';
-import confetti from 'canvas-confetti';
-
-// --- 1. CLOCK & FORMAT TOGGLE MODULE ---
-let is24Hour = localStorage.getItem('astro_clock_format') === '24';
-
-const clockElement = document.getElementById('clock');
-const greetingElement = document.getElementById('greeting');
-const toggleBtn = document.getElementById('format-toggle');
+let is24Hour = false;
 
 function updateClock() {
-  if (!clockElement) return;
+  const clockEl = document.getElementById('clock');
+  const greetingEl = document.getElementById('greeting');
+  if (!clockEl) return;
 
   const now = new Date();
   let hours = now.getHours();
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
-  let ampmHTML = '';
+  let ampm = '';
 
   if (!is24Hour) {
-    const ampm = hours >= 12 ? 'PM' : 'AM';
+    ampm = hours >= 12 ? ' PM' : ' AM';
     hours = hours % 12 || 12;
-    ampmHTML = `<span class="ampm-text">${ampm}</span>`;
   }
+  
+  const displayHours = String(hours).padStart(2, '0');
+  clockEl.innerHTML = `${displayHours}:${minutes}:${seconds}<span class="ampm-text">${ampm}</span>`;
 
-  const hoursStr = String(hours).padStart(2, '0');
-  clockElement.innerHTML = `${hoursStr}:${minutes}:${seconds}${ampmHTML}`;
-
-  if (greetingElement) {
-    const hourNum = now.getHours();
-    let greetingText = "Good evening, Explorer!";
-    if (hourNum < 12) greetingText = "Good morning, Explorer!";
-    else if (hourNum < 16) greetingText = "Good afternoon, Explorer!";
-    greetingElement.innerText = greetingText;
+  if (greetingEl) {
+    const curHour = now.getHours();
+    if (curHour < 12) greetingEl.textContent = 'Good morning, Explorer!';
+    else if (curHour < 18) greetingEl.textContent = 'Good afternoon, Explorer!';
+    else greetingEl.textContent = 'Good evening, Explorer!';
   }
 }
 
-if (toggleBtn) {
-  toggleBtn.innerText = is24Hour ? '12H' : '24H';
-  toggleBtn.addEventListener('click', () => {
-    is24Hour = !is24Hour;
-    localStorage.setItem('astro_clock_format', is24Hour ? '24' : '12');
-    toggleBtn.innerText = is24Hour ? '12H' : '24H';
-    updateClock();
-  });
-}
+document.getElementById('format-toggle')?.addEventListener('click', () => {
+  is24Hour = !is24Hour;
+  const toggleBtn = document.getElementById('format-toggle');
+  if (toggleBtn) toggleBtn.textContent = is24Hour ? '24H' : '12H';
+  updateClock();
+});
 
-updateClock();
-setInterval(updateClock, 1000);
-
-// --- 2. NASA APOD FETCH ENGINE ---
-async function fetchNASAData() {
+async function fetchAPOD() {
   const titleEl = document.getElementById('apod-title');
   const imgEl = document.getElementById('apod-img');
   const descEl = document.getElementById('apod-desc');
   const dateEl = document.getElementById('apod-date');
+  const imgWrapper = document.getElementById('apod-trigger');
 
-  if (!titleEl || !imgEl || !descEl) return;
-
-  const apiKey = import.meta.env.VITE_NASA_API_KEY || 'SxQtFNDwSaUDIgtXlff7mSsY7m7wzXRa5zxC58ff';
+  const apiKey = import.meta.env.VITE_NASA_API_KEY || 'DEMO_KEY';
+const url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
 
   try {
-    const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}`);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    const data = await response.json();
+    const res = await fetch(url);
 
-    titleEl.innerText = data.title || 'Astronomy Picture of the Day';
-    descEl.innerText = data.explanation || 'Explore the cosmos through NASA astronomy imagery.';
-    if (dateEl) dateEl.innerText = data.date || 'Today';
+    if (!res.ok) {
+      throw new Error(`NASA API Error ${res.status}: ${res.statusText}`);
+    }
+
+    const data = await res.json();
+
+    if (titleEl) titleEl.textContent = data.title || 'Astronomy Picture of the Day';
+    if (descEl) descEl.textContent = data.explanation || 'No description available.';
+    if (dateEl) dateEl.textContent = data.date || 'Today';
 
     if (data.media_type === 'image') {
-      imgEl.src = data.url;
-      imgEl.style.display = 'block';
-    } else {
+      if (imgEl) {
+        imgEl.src = data.hdurl || data.url;
+        imgEl.style.display = 'block';
+      }
+    } else if (data.media_type === 'video') {
+      if (imgWrapper) {
+        imgWrapper.innerHTML = `
+          <iframe src="${data.url}" frameborder="0" allowfullscreen 
+            style="width: 100%; height: 260px; border-radius: 12px;"></iframe>
+        `;
+      }
+    }
+  } catch (err) {
+    console.warn('NASA APOD API Failure:', err.message);
+    
+    if (titleEl) titleEl.textContent = 'APOD Service Rate Limited';
+    if (descEl) descEl.textContent = 'NASA DEMO_KEY request limit reached. Register for a free API key at api.nasa.gov to bypass rate limits.';
+    if (dateEl) dateEl.textContent = 'Offline';
+    if (imgEl) {
       imgEl.src = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop';
       imgEl.style.display = 'block';
     }
-  } catch (error) {
-    console.warn('NASA API Fetch Failed. Loading fallback mirror:', error);
-    titleEl.innerText = 'Deep Space Nebula';
-    descEl.innerText = 'An extraordinary view of starry space.';
-    if (dateEl) dateEl.innerText = 'Offline Mode';
-    imgEl.src = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop';
-    imgEl.style.display = 'block';
   }
 }
 
-document.addEventListener('DOMContentLoaded', fetchNASAData);
-fetchNASAData();
-
-// --- 3. TASK ENGINE WITH CONFETTI ---
-const todoInput = document.getElementById('todo-input');
-const todoAddBtn = document.getElementById('todo-add');
-const todoList = document.getElementById('todo-list');
-
-let tasks = JSON.parse(localStorage.getItem('astro_tasks')) || [];
-
-function renderTasks() {
-  if (!todoList) return;
-  todoList.innerHTML = '';
-
-  tasks.forEach((task, index) => {
-    const li = document.createElement('li');
-    li.className = 'todo-item';
-    li.innerHTML = `
-      <span>${task}</span>
-      <button onclick="deleteTask(${index})">✕</button>
-    `;
-    todoList.appendChild(li);
-  });
-
-  localStorage.setItem('astro_tasks', JSON.stringify(tasks));
-}
-
-window.deleteTask = function(index) {
-  tasks.splice(index, 1);
-  renderTasks();
-};
-
-if (todoAddBtn && todoInput) {
-  todoAddBtn.addEventListener('click', () => {
-    const text = todoInput.value.trim();
-    if (text) {
-      tasks.push(text);
-      todoInput.value = '';
-      renderTasks();
-
-      confetti({
-        particleCount: 40,
-        spread: 60,
-        origin: { y: 0.8 },
-        colors: ['#6366f1', '#ec4899', '#8b5cf6']
-      });
-    }
-  });
-
-  todoInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') todoAddBtn.click();
-  });
-}
-
-renderTasks();
-
-// --- 4. GLOBAL SEARCH HOTKEY ('/') ---
-document.addEventListener('keydown', (e) => {
-  const searchInput = document.querySelector('.search-form input');
-  if (document.activeElement === searchInput || document.activeElement === todoInput) return;
-  if (e.key === '/') {
-    e.preventDefault();
-    if (searchInput) searchInput.focus();
-  }
-});
-
-// --- 5. ANIMATED STARFIELD CANVAS ---
-const canvas = document.getElementById('starfield');
-if (canvas) {
-  const ctx = canvas.getContext('2d');
-  let stars = [];
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  function initStars() {
-    stars = [];
-    for (let i = 0; i < 120; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 1.5,
-        alpha: Math.random(),
-        speed: Math.random() * 0.02 + 0.005
-      });
-    }
-  }
-
-  function drawStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(star => {
-      ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-      ctx.fill();
-
-      star.alpha += star.speed;
-      if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
-    });
-    requestAnimationFrame(drawStars);
-  }
-
-  window.addEventListener('resize', () => {
-    resizeCanvas();
-    initStars();
-  });
-
-  resizeCanvas();
-  initStars();
-  drawStars();
-}
-
-async function fetchWeather(lat, lon) {
+async function fetchWeather(lat, lon, locName = 'Local Station') {
   const tempEl = document.getElementById('weather-temp');
   const descEl = document.getElementById('weather-desc');
   const coordsEl = document.getElementById('weather-coords');
   const locEl = document.getElementById('location-name');
 
-  if (coordsEl) coordsEl.innerText = `${lat.toFixed(2)}° N, ${lon.toFixed(2)}° E`;
+  if (coordsEl) coordsEl.textContent = `${lat.toFixed(2)}° N, ${lon.toFixed(2)}° E`;
+  if (locEl) locEl.textContent = locName;
 
   try {
-    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+    const res = await fetch(url);
     const data = await res.json();
-    const weather = data.current_weather;
 
-    if (tempEl) tempEl.innerText = `${Math.round(weather.temperature)}°C`;
-    if (descEl) descEl.innerText = `Wind: ${weather.windspeed} km/h`;
-    if (locEl) locEl.innerText = "LOCAL ATMOSPHERE";
+    if (data.current_weather) {
+      if (tempEl) tempEl.textContent = `${Math.round(data.current_weather.temperature)}°C`;
+      if (descEl) descEl.textContent = `WIND: ${data.current_weather.windspeed} KM/H`;
+    }
   } catch (err) {
-    if (descEl) descEl.innerText = "Telemetry Offline";
+    console.warn('Weather API Error:', err);
+    if (tempEl) tempEl.textContent = '23°C';
+    if (descEl) descEl.textContent = 'ATMOSPHERE NORMAL';
   }
 }
 
 function initTelemetry() {
-  if ("geolocation" in navigator) {
+  if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(
-      (pos) => fetchWeather(pos.coords.latitude, pos.coords.longitude),
-      () => fetchWeather(18.62, 73.80) // Fallback default coordinates
+      (pos) => fetchWeather(pos.coords.latitude, pos.coords.longitude, 'ORBITAL LOCK'),
+      () => fetchWeather(18.62, 73.88, 'Pimpri-Chinchwad'), // Default fallback coords
+      { timeout: 5000 }
     );
   } else {
-    fetchWeather(18.62, 73.80);
+    fetchWeather(18.62, 73.88, 'Pimpri-Chinchwad');
   }
 }
 
-document.addEventListener('DOMContentLoaded', initTelemetry);
-initTelemetry();
+let audioCtx = null;
+let noiseNode = null;
+let gainNode = null;
+let isAudioPlaying = false;
+
+function createWebAudioGenerator(type = 'cosmic') {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  if (noiseNode) {
+    noiseNode.stop();
+    noiseNode.disconnect();
+  }
+
+  const bufferSize = audioCtx.sampleRate * 2;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const output = buffer.getChannelData(0);
+
+  for (let i = 0; i < bufferSize; i++) {
+    if (type === 'rain') {
+      output[i] = Math.random() * 2 - 1; 
+    } else if (type === 'lofi') {
+      output[i] = (Math.random() * 2 - 1) * 0.3; 
+    } else { 
+      output[i] = Math.sin(i * 0.01) * 0.1 + (Math.random() * 0.05);
+    }
+  }
+
+  noiseNode = audioCtx.createBufferSource();
+  noiseNode.buffer = buffer;
+  noiseNode.loop = true;
+
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = type === 'rain' ? 'bandpass' : 'lowpass';
+  filter.frequency.value = type === 'rain' ? 1000 : 250;
+
+  gainNode = audioCtx.createGain();
+  const volSlider = document.getElementById('volume-slider');
+  gainNode.gain.value = volSlider ? parseFloat(volSlider.value) : 0.5;
+
+  noiseNode.connect(filter);
+  filter.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  noiseNode.start();
+}
+
+document.getElementById('sound-toggle')?.addEventListener('click', () => {
+  const btn = document.getElementById('sound-toggle');
+  const select = document.getElementById('sound-select');
+
+  if (!isAudioPlaying) {
+    createWebAudioGenerator(select?.value || 'cosmic');
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    if (btn) btn.innerHTML = '<i class="fas fa-pause"></i>';
+    isAudioPlaying = true;
+  } else {
+    if (noiseNode) noiseNode.stop();
+    if (btn) btn.innerHTML = '<i class="fas fa-play"></i>';
+    isAudioPlaying = false;
+  }
+});
+
+document.getElementById('sound-select')?.addEventListener('change', (e) => {
+  if (isAudioPlaying) {
+    createWebAudioGenerator(e.target.value);
+  }
+});
+
+document.getElementById('volume-slider')?.addEventListener('input', (e) => {
+  if (gainNode) {
+    gainNode.gain.value = parseFloat(e.target.value);
+  }
+});
 
 const defaultBookmarks = [
-  { name: 'GitHub', url: 'https://github.com' },
+  { name: 'GitHub', url: 'https://github.com/Tan5dev' },
   { name: 'YouTube', url: 'https://youtube.com' },
   { name: 'Google', url: 'https://google.com' }
 ];
@@ -248,18 +212,22 @@ function renderBookmarks() {
   container.innerHTML = '';
 
   bookmarks.forEach((bm, index) => {
-    const domain = new URL(bm.url).hostname;
-    const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
-    
-    const wrapper = document.createElement('div');
-    wrapper.className = 'bookmark-item';
-    wrapper.innerHTML = `
-      <a href="${bm.url}" target="_blank" class="shortcut-btn" title="${bm.name}">
-        <img src="${favicon}" alt="${bm.name}" />
-      </a>
-      <span class="delete-bm" onclick="removeBookmark(${index})">&times;</span>
-    `;
-    container.appendChild(wrapper);
+    try {
+      const domain = new URL(bm.url).hostname;
+      const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+      
+      const wrapper = document.createElement('div');
+      wrapper.className = 'bookmark-item';
+      wrapper.innerHTML = `
+        <a href="${bm.url}" target="_blank" class="shortcut-btn" title="${bm.name}">
+          <img src="${favicon}" alt="${bm.name}" />
+        </a>
+        <span class="delete-bm" onclick="removeBookmark(${index})">&times;</span>
+      `;
+      container.appendChild(wrapper);
+    } catch (e) {
+      console.error('Invalid URL:', bm.url);
+    }
   });
 }
 
@@ -269,39 +237,32 @@ window.removeBookmark = (index) => {
   renderBookmarks();
 };
 
+const bmModal = document.getElementById('bm-modal');
 document.getElementById('add-bookmark-btn')?.addEventListener('click', () => {
-  const url = prompt('Enter website URL (e.g., https://nasa.gov):');
+  if (bmModal) bmModal.style.display = 'block';
+});
+
+document.getElementById('bm-modal-close')?.addEventListener('click', () => {
+  if (bmModal) bmModal.style.display = 'none';
+});
+
+document.getElementById('bm-save-btn')?.addEventListener('click', () => {
+  const nameInput = document.getElementById('bm-name-input');
+  const urlInput = document.getElementById('bm-url-input');
+  let url = urlInput.value.trim();
+  const name = nameInput.value.trim();
+
   if (url) {
-    const name = prompt('Enter name:', new URL(url).hostname);
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://' + url;
+    }
     bookmarks.push({ name: name || 'Link', url });
     localStorage.setItem('astro_bookmarks', JSON.stringify(bookmarks));
     renderBookmarks();
-  }
-});
-
-const audioTracks = {
-  cosmic: 'https://actions.google.com/sounds/v1/science_fiction/space_ship_hum.ogg',
-  rain: 'https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg',
-  lofi: 'https://actions.google.com/sounds/v1/ambiences/hum_and_rumble.ogg'
-};
-
-let currentAudio = new Audio(audioTracks.cosmic);
-currentAudio.loop = true;
-let isPlaying = false;
-
-document.getElementById('sound-toggle')?.addEventListener('click', () => {
-  const btn = document.getElementById('sound-toggle');
-  const select = document.getElementById('sound-select');
-
-  if (!isPlaying) {
-    currentAudio.src = audioTracks[select.value];
-    currentAudio.play();
-    btn.innerHTML = '<i class="fas fa-pause"></i>';
-    isPlaying = true;
-  } else {
-    currentAudio.pause();
-    btn.innerHTML = '<i class="fas fa-play"></i>';
-    isPlaying = false;
+    
+    if (nameInput) nameInput.value = '';
+    if (urlInput) urlInput.value = '';
+    if (bmModal) bmModal.style.display = 'none';
   }
 });
 
@@ -312,18 +273,23 @@ document.getElementById('apod-trigger')?.addEventListener('click', () => {
   const modalTitle = document.getElementById('modal-title');
   const modalDesc = document.getElementById('modal-desc');
 
-  if (img && img.src) {
+  if (img && img.src && modal) {
     modal.style.display = 'block';
-    modalImg.src = img.src;
-    modalTitle.innerText = document.getElementById('apod-title').innerText;
-    modalDesc.innerText = document.getElementById('apod-desc').innerText;
+    if (modalImg) modalImg.src = img.src;
+    if (modalTitle) modalTitle.innerText = document.getElementById('apod-title')?.innerText || '';
+    if (modalDesc) modalDesc.innerText = document.getElementById('apod-desc')?.innerText || '';
   }
 });
 
 document.getElementById('modal-close')?.addEventListener('click', () => {
-  document.getElementById('apod-modal').style.display = 'none';
+  const modal = document.getElementById('apod-modal');
+  if (modal) modal.style.display = 'none';
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+  updateClock();
+  setInterval(updateClock, 1000);
+  fetchAPOD();
+  initTelemetry();
   renderBookmarks();
 });
