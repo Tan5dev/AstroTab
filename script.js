@@ -52,3 +52,49 @@ async function fetchNASAData() {
   }
 }
 fetchNASAData();
+
+const todoInput = document.getElementById('todo-input');
+const todoAddBtn = document.getElementById('todo-add');
+const todoList = document.getElementById('todo-list');
+
+let tasks = JSON.parse(localStorage.getItem('astro_tasks')) || [];
+
+function renderTasks(){
+    if(!todoList) return;
+    todoList.innerHTML = '';
+
+    tasks.forEach((task, index) =>{
+        const li = document.createElement('li');
+        li.className='todo-item';
+        li.innerHTML = `<span>${task}</span>
+      <button onclick="deleteTask(${index})">✕</button>
+    `;
+    todoList.appendChild(li);
+    });
+
+    localStorage.setItem('astro_tasks', JSON.stringify(tasks));
+}
+
+if (todoAddBtn && todoInput) {
+  todoAddBtn.addEventListener('click', () => {
+    const text = todoInput.value.trim();
+    if (text) {
+      tasks.push(text);
+      todoInput.value = '';
+      renderTasks();
+    }
+  });
+
+  todoInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      todoAddBtn.click();
+    }
+  });
+}
+
+function deleteTask(index) {
+  tasks.splice(index, 1);
+  renderTasks();
+}
+
+renderTasks();
