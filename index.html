@@ -5,8 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AstroTab Dashboard</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
+  <canvas id="starfield"></canvas>
   <div class="dashboard-container">
   
   <div class="column">
@@ -19,26 +25,30 @@
     </div>
 
     <div class="card">
-      <form action="https://www.google.com/search" method="GET" class="search-form" target="_blank">
-        <input type="text" name="q" placeholder="Search Google..." autocomplete="off" required />
-        <button type="submit">Search</button>
-      </form>
+      <form action="https://www.google.com/search" method="GET" target="_blank" class="search-form">
+    <div class="input-wrapper">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" name="q" placeholder="Search Google or type a URL..." required autocomplete="off" />
+      <span class="hotkey-badge">/</span>
+    </div>
+    <button type="submit">Search</button>
+  </form>
     </div>
   </div>
 
-  <div class="column">
-    <div class="card apod-card" id="nasa-card">
-      <div class="card-header">
-        <span class="badge">NASA APOD</span>
-        <span id="apod-date" class="date-tag">Today</span>
-      </div>
-      <h2 id="apod-title">Fetching space data...</h2>
-      <div class="image-wrapper">
-        <img id="apod-img" src="" alt="Astronomy Picture of the Day" style="display: none;" />
-      </div>
-      <p id="apod-desc" class="apod-desc"></p>
+<div class="column">
+  <div class="card apod-card" id="nasa-card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+      <span class="badge">NASA APOD</span>
+      <span id="apod-date" class="date-tag">Today</span>
     </div>
+    <h2 id="apod-title">Fetching space data...</h2>
+    <div class="image-wrapper">
+      <img id="apod-img" src="" alt="Astronomy Picture of the Day" style="display: none;" />
+    </div>
+    <p id="apod-desc" class="apod-desc"></p>
   </div>
+</div>
 
   <div class="column">
     <div class="card todo-card" id="notes-card">
