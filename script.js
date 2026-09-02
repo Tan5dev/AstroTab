@@ -233,3 +233,97 @@ function initTelemetry() {
 
 document.addEventListener('DOMContentLoaded', initTelemetry);
 initTelemetry();
+
+const defaultBookmarks = [
+  { name: 'GitHub', url: 'https://github.com' },
+  { name: 'YouTube', url: 'https://youtube.com' },
+  { name: 'Google', url: 'https://google.com' }
+];
+
+let bookmarks = JSON.parse(localStorage.getItem('astro_bookmarks')) || defaultBookmarks;
+
+function renderBookmarks() {
+  const container = document.getElementById('bookmarks-bar');
+  if (!container) return;
+  container.innerHTML = '';
+
+  bookmarks.forEach((bm, index) => {
+    const domain = new URL(bm.url).hostname;
+    const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+    
+    const wrapper = document.createElement('div');
+    wrapper.className = 'bookmark-item';
+    wrapper.innerHTML = `
+      <a href="${bm.url}" target="_blank" class="shortcut-btn" title="${bm.name}">
+        <img src="${favicon}" alt="${bm.name}" />
+      </a>
+      <span class="delete-bm" onclick="removeBookmark(${index})">&times;</span>
+    `;
+    container.appendChild(wrapper);
+  });
+}
+
+window.removeBookmark = (index) => {
+  bookmarks.splice(index, 1);
+  localStorage.setItem('astro_bookmarks', JSON.stringify(bookmarks));
+  renderBookmarks();
+};
+
+document.getElementById('add-bookmark-btn')?.addEventListener('click', () => {
+  const url = prompt('Enter website URL (e.g., https://nasa.gov):');
+  if (url) {
+    const name = prompt('Enter name:', new URL(url).hostname);
+    bookmarks.push({ name: name || 'Link', url });
+    localStorage.setItem('astro_bookmarks', JSON.stringify(bookmarks));
+    renderBookmarks();
+  }
+});
+
+const audioTracks = {
+  cosmic: 'https://actions.google.com/sounds/v1/science_fiction/space_ship_hum.ogg',
+  rain: 'https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg',
+  lofi: 'https://actions.google.com/sounds/v1/ambiences/hum_and_rumble.ogg'
+};
+
+let currentAudio = new Audio(audioTracks.cosmic);
+currentAudio.loop = true;
+let isPlaying = false;
+
+document.getElementById('sound-toggle')?.addEventListener('click', () => {
+  const btn = document.getElementById('sound-toggle');
+  const select = document.getElementById('sound-select');
+
+  if (!isPlaying) {
+    currentAudio.src = audioTracks[select.value];
+    currentAudio.play();
+    btn.innerHTML = '<i class="fas fa-pause"></i>';
+    isPlaying = true;
+  } else {
+    currentAudio.pause();
+    btn.innerHTML = '<i class="fas fa-play"></i>';
+    isPlaying = false;
+  }
+});
+
+document.getElementById('apod-trigger')?.addEventListener('click', () => {
+  const img = document.getElementById('apod-img');
+  const modal = document.getElementById('apod-modal');
+  const modalImg = document.getElementById('modal-img');
+  const modalTitle = document.getElementById('modal-title');
+  const modalDesc = document.getElementById('modal-desc');
+
+  if (img && img.src) {
+    modal.style.display = 'block';
+    modalImg.src = img.src;
+    modalTitle.innerText = document.getElementById('apod-title').innerText;
+    modalDesc.innerText = document.getElementById('apod-desc').innerText;
+  }
+});
+
+document.getElementById('modal-close')?.addEventListener('click', () => {
+  document.getElementById('apod-modal').style.display = 'none';
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderBookmarks();
+});

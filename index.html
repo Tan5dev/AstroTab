@@ -16,23 +16,17 @@
   
   <div class="dashboard-container">
     
-    <!-- Top Command Navigation Bar -->
     <header class="top-nav">
       <div class="brand">
         <span class="pulse-dot"></span>
         <span class="brand-name">ASTRO // OS</span>
       </div>
-      <div class="quick-links">
-        <a href="https://github.com" target="_blank" class="shortcut-btn" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="https://youtube.com" target="_blank" class="shortcut-btn" title="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="https://google.com" target="_blank" class="shortcut-btn" title="Google"><i class="fab fa-google"></i></a>
-        <a href="https://nasa.gov" target="_blank" class="shortcut-btn" title="NASA"><i class="fas fa-rocket"></i></a>
+      <div class="quick-links" id="bookmarks-bar">
       </div>
+      <button id="add-bookmark-btn" class="shortcut-btn add-btn" title="Add Bookmark"><i class="fas fa-plus"></i></button>
     </header>
 
-    <!-- LEFT SIDEBAR: Clock & Telemetry -->
     <div class="dash-col">
-      <!-- Digital Clock Card -->
       <div class="card" id="clock-card">
         <div class="clock-header">
           <h1 class="clock" id="clock">00:00:00</h1>
@@ -41,7 +35,6 @@
         <p class="greeting" id="greeting">Initializing...</p>
       </div>
 
-      <!-- Live Telemetry Card -->
       <div class="card telemetry-card">
         <div class="card-header">
           <span class="badge"><i class="fas fa-satellite"></i> TELEMETRY</span>
@@ -64,11 +57,23 @@
           </div>
         </div>
       </div>
+
+      <div class="card sound-card">
+        <div class="card-header">
+          <span class="badge"><i class="fas fa-headphones"></i> SOUNDSCAPES</span>
+        </div>
+        <div class="sound-controls">
+          <select id="sound-select" class="sound-select">
+            <option value="cosmic">Cosmic Hum</option>
+            <option value="rain">Deep Space Rain</option>
+            <option value="lofi">Lo-Fi Radio</option>
+          </select>
+          <button id="sound-toggle" class="sound-btn"><i class="fas fa-play"></i></button>
+        </div>
+      </div>
     </div>
 
-    <!-- CENTER COLUMN: Search Bar (Top) & NASA APOD (Below) -->
     <div class="dash-col center-col">
-      <!-- Center Google Search Bar -->
       <div class="card search-card">
         <form action="https://www.google.com/search" method="GET" target="_blank" class="search-form">
           <div class="input-wrapper">
@@ -80,21 +85,20 @@
         </form>
       </div>
 
-      <!-- NASA APOD Card -->
       <div class="card apod-card" id="nasa-card">
         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
           <span class="badge">NASA APOD</span>
           <span id="apod-date" class="date-tag">Today</span>
         </div>
         <h2 id="apod-title">Fetching space data...</h2>
-        <div class="image-wrapper">
+        <div class="image-wrapper" id="apod-trigger" style="cursor: pointer;">
           <img id="apod-img" src="" alt="Astronomy Picture of the Day" style="display: none;" />
+          <div class="expand-hint"><i class="fas fa-expand"></i> Click to Expand HD</div>
         </div>
         <p id="apod-desc" class="apod-desc"></p>
       </div>
     </div>
 
-    <!-- RIGHT SIDEBAR: Quick Notes -->
     <div class="dash-col">
       <div class="card todo-card" id="notes-card">
         <h3>Quick Notes</h3>
@@ -106,6 +110,15 @@
       </div>
     </div>
 
+  </div>
+
+  <div id="apod-modal" class="modal">
+    <span class="modal-close" id="modal-close">&times;</span>
+    <img class="modal-content" id="modal-img" />
+    <div class="modal-caption">
+      <h2 id="modal-title"></h2>
+      <p id="modal-desc"></p>
+    </div>
   </div>
 
   <script type="module" src="/script.js"></script>
