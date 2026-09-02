@@ -24,9 +24,16 @@
     </div>
 
     <div class="column">
-      <div class="card" id="nasa-card">
-        <h2>NASA Feature</h2>
-        <p>Space data placeholder...</p>
+      <div class="card apod-card" id="nasa-card">
+        <div class="card header">
+            <span class="badge">NASA APOD</span>
+            <span id="apod-date" class="date-tag">Today</span>
+        </div>
+        <h2 id="apod-title">Fetching deep space data...</h2>
+        <div class="image-wrapper">
+            <img id="apod-image" src="" alt="Astronomy Picture of the Day" />
+        </div>
+        <p id="apod-img" src="" alt="Astronomy Picture of the Day"></p>
       </div>
     </div>
 
