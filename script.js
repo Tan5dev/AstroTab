@@ -103,16 +103,43 @@ async function fetchWeather(lat, lon, locName = 'Local Station') {
     }
   } catch (err) {
     console.warn('Weather API Error:', err);
-    if (tempEl) tempEl.textContent = '23°C';
-    if (descEl) descEl.textContent = 'ATMOSPHERE NORMAL';
   }
 }
+
+const locModal = document.getElementById('loc-modal');
+document.getElementById('loc-picker-btn')?.addEventListener('click', () => {
+  if (locModal) locModal.style.display = 'block';
+});
+document.getElementById('loc-modal-close')?.addEventListener('click', () => {
+  if (locModal) locModal.style.display = 'none';
+});
+
+document.getElementById('loc-search-btn')?.addEventListener('click', async () => {
+  const input = document.getElementById('loc-search-input');
+  const query = input?.value.trim();
+  if (!query) return;
+
+  try {
+    const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1`);
+    const data = await res.json();
+    if (data.results && data.results.length > 0) {
+      const loc = data.results[0];
+      fetchWeather(loc.latitude, loc.longitude, `${loc.name}, ${loc.country_code.toUpperCase()}`);
+      if (locModal) locModal.style.display = 'none';
+      if (input) input.value = '';
+    } else {
+      alert('Location not found.');
+    }
+  } catch (e) {
+    console.error('Geocoding error:', e);
+  }
+});
 
 function initTelemetry() {
   if ('geolocation' in navigator) {
     navigator.geolocation.getCurrentPosition(
       (pos) => fetchWeather(pos.coords.latitude, pos.coords.longitude, 'ORBITAL LOCK'),
-      () => fetchWeather(18.62, 73.88, 'Pimpri-Chinchwad'), // Default fallback coords
+      () => fetchWeather(18.62, 73.88, 'Pimpri-Chinchwad'),
       { timeout: 5000 }
     );
   } else {
@@ -126,27 +153,15 @@ let gainNode = null;
 let isAudioPlaying = false;
 
 function createWebAudioGenerator(type = 'cosmic') {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-
-  if (noiseNode) {
-    noiseNode.stop();
-    noiseNode.disconnect();
-  }
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (noiseNode) { noiseNode.stop(); noiseNode.disconnect(); }
 
   const bufferSize = audioCtx.sampleRate * 2;
   const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
   const output = buffer.getChannelData(0);
 
   for (let i = 0; i < bufferSize; i++) {
-    if (type === 'rain') {
-      output[i] = Math.random() * 2 - 1; 
-    } else if (type === 'lofi') {
-      output[i] = (Math.random() * 2 - 1) * 0.3; 
-    } else { 
-      output[i] = Math.sin(i * 0.01) * 0.1 + (Math.random() * 0.05);
-    }
+    output[i] = type === 'rain' ? (Math.random() * 2 - 1) : Math.sin(i * 0.01) * 0.1 + (Math.random() * 0.05);
   }
 
   noiseNode = audioCtx.createBufferSource();
@@ -164,19 +179,15 @@ function createWebAudioGenerator(type = 'cosmic') {
   noiseNode.connect(filter);
   filter.connect(gainNode);
   gainNode.connect(audioCtx.destination);
-
   noiseNode.start();
 }
 
 document.getElementById('sound-toggle')?.addEventListener('click', () => {
   const btn = document.getElementById('sound-toggle');
   const select = document.getElementById('sound-select');
-
   if (!isAudioPlaying) {
     createWebAudioGenerator(select?.value || 'cosmic');
-    if (audioCtx && audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
+    if (audioCtx?.state === 'suspended') audioCtx.resume();
     if (btn) btn.innerHTML = '<i class="fas fa-pause"></i>';
     isAudioPlaying = true;
   } else {
@@ -186,24 +197,11 @@ document.getElementById('sound-toggle')?.addEventListener('click', () => {
   }
 });
 
-document.getElementById('sound-select')?.addEventListener('change', (e) => {
-  if (isAudioPlaying) {
-    createWebAudioGenerator(e.target.value);
-  }
-});
-
-document.getElementById('volume-slider')?.addEventListener('input', (e) => {
-  if (gainNode) {
-    gainNode.gain.value = parseFloat(e.target.value);
-  }
-});
-
 const defaultBookmarks = [
-  { name: 'GitHub', url: 'https://github.com/Tan5dev' },
+  { name: 'GitHub', url: 'https://github.com' },
   { name: 'YouTube', url: 'https://youtube.com' },
   { name: 'Google', url: 'https://google.com' }
 ];
-
 let bookmarks = JSON.parse(localStorage.getItem('astro_bookmarks')) || defaultBookmarks;
 
 function renderBookmarks() {
@@ -215,7 +213,6 @@ function renderBookmarks() {
     try {
       const domain = new URL(bm.url).hostname;
       const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
-      
       const wrapper = document.createElement('div');
       wrapper.className = 'bookmark-item';
       wrapper.innerHTML = `
@@ -225,9 +222,7 @@ function renderBookmarks() {
         <span class="delete-bm" onclick="removeBookmark(${index})">&times;</span>
       `;
       container.appendChild(wrapper);
-    } catch (e) {
-      console.error('Invalid URL:', bm.url);
-    }
+    } catch (e) {}
   });
 }
 
@@ -237,59 +232,208 @@ window.removeBookmark = (index) => {
   renderBookmarks();
 };
 
-const bmModal = document.getElementById('bm-modal');
-document.getElementById('add-bookmark-btn')?.addEventListener('click', () => {
-  if (bmModal) bmModal.style.display = 'block';
-});
-
-document.getElementById('bm-modal-close')?.addEventListener('click', () => {
-  if (bmModal) bmModal.style.display = 'none';
-});
-
-document.getElementById('bm-save-btn')?.addEventListener('click', () => {
-  const nameInput = document.getElementById('bm-name-input');
-  const urlInput = document.getElementById('bm-url-input');
-  let url = urlInput.value.trim();
-  const name = nameInput.value.trim();
-
-  if (url) {
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      url = 'https://' + url;
-    }
-    bookmarks.push({ name: name || 'Link', url });
-    localStorage.setItem('astro_bookmarks', JSON.stringify(bookmarks));
-    renderBookmarks();
-    
-    if (nameInput) nameInput.value = '';
-    if (urlInput) urlInput.value = '';
-    if (bmModal) bmModal.style.display = 'none';
-  }
-});
-
 document.getElementById('apod-trigger')?.addEventListener('click', () => {
   const img = document.getElementById('apod-img');
   const modal = document.getElementById('apod-modal');
-  const modalImg = document.getElementById('modal-img');
-  const modalTitle = document.getElementById('modal-title');
-  const modalDesc = document.getElementById('modal-desc');
-
   if (img && img.src && modal) {
     modal.style.display = 'block';
-    if (modalImg) modalImg.src = img.src;
-    if (modalTitle) modalTitle.innerText = document.getElementById('apod-title')?.innerText || '';
-    if (modalDesc) modalDesc.innerText = document.getElementById('apod-desc')?.innerText || '';
+    document.getElementById('modal-img').src = img.src;
+    document.getElementById('modal-title').innerText = document.getElementById('apod-title')?.innerText || '';
+    document.getElementById('modal-desc').innerText = document.getElementById('apod-desc')?.innerText || '';
   }
 });
 
 document.getElementById('modal-close')?.addEventListener('click', () => {
-  const modal = document.getElementById('apod-modal');
-  if (modal) modal.style.display = 'none';
+  document.getElementById('apod-modal').style.display = 'none';
 });
 
+let timerMode = 'pomodoro'; 
+let timerInterval = null;
+let isTimerRunning = false;
+
+let customPomoMinutes = parseInt(localStorage.getItem('astro_pomo_mins'), 10) || 25;
+let timerSeconds = customPomoMinutes * 60;
+
+function updateTimerDisplay() {
+  const display = document.getElementById('timer-display');
+  if (!display) return;
+  const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+  const secs = String(timerSeconds % 60).padStart(2, '0');
+  display.textContent = `${mins}:${secs}`;
+}
+
+function resetTimerState() {
+  clearInterval(timerInterval);
+  isTimerRunning = false;
+  const startBtn = document.getElementById('timer-start');
+  if (startBtn) startBtn.innerHTML = '<i class="fas fa-play"></i>';
+
+  if (timerMode === 'pomodoro') {
+    timerSeconds = customPomoMinutes * 60;
+  } else {
+    timerSeconds = 0;
+  }
+  updateTimerDisplay();
+}
+
+document.getElementById('mode-pomo-btn')?.addEventListener('click', () => {
+  if (timerMode === 'pomodoro') return;
+  timerMode = 'pomodoro';
+  document.getElementById('mode-pomo-btn')?.classList.add('active-mode');
+  document.getElementById('mode-sw-btn')?.classList.remove('active-mode');
+  
+  const badge = document.getElementById('timer-badge');
+  if (badge) badge.innerHTML = '<i class="fas fa-stopwatch"></i> FOCUS TIMER';
+  
+  resetTimerState();
+});
+
+document.getElementById('mode-sw-btn')?.addEventListener('click', () => {
+  if (timerMode === 'stopwatch') return;
+  timerMode = 'stopwatch';
+  document.getElementById('mode-sw-btn')?.classList.add('active-mode');
+  document.getElementById('mode-pomo-btn')?.classList.remove('active-mode');
+  
+  const badge = document.getElementById('timer-badge');
+  if (badge) badge.innerHTML = '<i class="fas fa-stopwatch-20"></i> STOPWATCH';
+
+  resetTimerState();
+});
+
+document.getElementById('timer-settings-toggle')?.addEventListener('click', () => {
+  const panel = document.getElementById('timer-settings-panel');
+  if (panel) {
+    const isHidden = panel.style.display === 'none';
+    panel.style.display = isHidden ? 'flex' : 'none';
+  }
+});
+
+document.getElementById('save-timer-settings')?.addEventListener('click', () => {
+  const input = document.getElementById('custom-pomo-min');
+  const newMins = parseInt(input?.value, 10);
+
+  if (newMins && newMins > 0) {
+    customPomoMinutes = newMins;
+    localStorage.setItem('astro_pomo_mins', newMins);
+    if (timerMode === 'pomodoro') {
+      resetTimerState();
+    }
+    const panel = document.getElementById('timer-settings-panel');
+    if (panel) panel.style.display = 'none';
+  }
+});
+
+document.getElementById('timer-start')?.addEventListener('click', () => {
+  const btn = document.getElementById('timer-start');
+  
+  if (!isTimerRunning) {
+    isTimerRunning = true;
+    if (btn) btn.innerHTML = '<i class="fas fa-pause"></i>';
+
+    timerInterval = setInterval(() => {
+      if (timerMode === 'pomodoro') {
+        if (timerSeconds > 0) {
+          timerSeconds--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          isTimerRunning = false;
+          alert('Focus Session Complete!');
+          if (btn) btn.innerHTML = '<i class="fas fa-play"></i>';
+        }
+      } else {
+        timerSeconds++;
+        updateTimerDisplay();
+      }
+    }, 1000);
+  } else {
+    clearInterval(timerInterval);
+    isTimerRunning = false;
+    if (btn) btn.innerHTML = '<i class="fas fa-play"></i>';
+  }
+});
+
+document.getElementById('timer-reset')?.addEventListener('click', () => {
+  resetTimerState();
+});
+
+const themeBtn = document.getElementById('theme-btn');
+const themePopover = document.getElementById('theme-popover');
+const blurSlider = document.getElementById('blur-slider');
+
+themeBtn?.addEventListener('click', () => {
+  themePopover?.classList.toggle('active');
+});
+
+blurSlider?.addEventListener('input', (e) => {
+  const cards = document.querySelectorAll('.card, .top-nav');
+  cards.forEach(card => {
+    card.style.backdropFilter = `blur(${e.target.value}px)`;
+  });
+});
+
+
+const canvas = document.getElementById('starfield');
+const ctx = canvas ? canvas.getContext('2d') : null;
+
+let stars = [];
+let starCount = 150;
+
+function resizeCanvas() {
+  if (!canvas) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  initStars();
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < starCount; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.5 + 0.5,
+      alpha: Math.random(),
+      speed: Math.random() * 0.02 + 0.005
+    });
+  }
+}
+
+function drawStars() {
+  if (!ctx || !canvas) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  stars.forEach(star => {
+    star.alpha += star.speed;
+    if (star.alpha > 1 || star.alpha < 0) {
+      star.speed = -star.speed;
+    }
+
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(star.alpha)})`;
+    ctx.shadowBlur = star.radius * 2;
+    ctx.shadowColor = '#ffffff';
+    ctx.fill();
+  });
+
+  requestAnimationFrame(drawStars);
+}
+
+document.getElementById('stars-slider')?.addEventListener('input', (e) => {
+  starCount = parseInt(e.target.value, 10);
+  initStars();
+});
+
+window.addEventListener('resize', resizeCanvas);
+
 document.addEventListener('DOMContentLoaded', () => {
+  resizeCanvas();
+  drawStars();
   updateClock();
   setInterval(updateClock, 1000);
   fetchAPOD();
   initTelemetry();
   renderBookmarks();
+  updateTimerDisplay();
 });

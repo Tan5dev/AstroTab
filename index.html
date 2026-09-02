@@ -24,6 +24,16 @@
       <div class="quick-links" id="bookmarks-bar"></div>
       <button id="add-bookmark-btn" class="shortcut-btn add-btn" title="Add Bookmark"><i class="fas fa-plus"></i></button>
     </div>
+
+    <div class="theme-controls">
+      <button id="theme-btn" class="shortcut-btn" title="Customize Theme"><i class="fas fa-sliders"></i></button>
+      <div id="theme-popover" class="theme-popover">
+        <label>Blur Intensity</label>
+        <input type="range" id="blur-slider" min="0" max="30" value="12" />
+        <label>Star Density</label>
+        <input type="range" id="stars-slider" min="50" max="400" value="150" />
+      </div>
+    </div>
   </header>
 
   <div class="dashboard-container">
@@ -38,10 +48,11 @@
       </div>
 
       <div class="card telemetry-card">
-        <div class="card-header">
+        <div class="card-header" style="display:flex; justify-space-between; align-items:center;">
           <span class="badge"><i class="fas fa-satellite"></i> TELEMETRY</span>
-          <span id="location-name" class="sub-text">Scanning Location...</span>
+          <button id="loc-picker-btn" class="icon-btn" title="Change Location"><i class="fas fa-location-dot"></i></button>
         </div>
+        <div class="sub-text" id="location-name" style="margin-bottom: 0.5rem;">Scanning Location...</div>
         <div class="telemetry-grid">
           <div class="telemetry-item">
             <i id="weather-icon" class="fas fa-cloud-sun weather-i"></i>
@@ -107,6 +118,33 @@
     </div>
 
     <div class="dash-col">
+      
+<div class="card timer-card">
+  <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <span class="badge" id="timer-badge"><i class="fas fa-stopwatch"></i> FOCUS TIMER</span>
+    <div class="timer-mode-controls">
+      <button id="mode-pomo-btn" class="icon-btn active-mode" title="Pomodoro Mode"><i class="fas fa-clock"></i></button>
+      <button id="mode-sw-btn" class="icon-btn" title="Stopwatch Mode"><i class="fas fa-stopwatch-20"></i></button>
+      <button id="timer-settings-toggle" class="icon-btn" title="Configure Timer"><i class="fas fa-gear"></i></button>
+    </div>
+  </div>
+
+  <div class="timer-display" id="timer-display">25:00</div>
+
+  <div id="timer-settings-panel" class="timer-settings-panel" style="display: none;">
+    <div class="setting-row">
+      <label for="custom-pomo-min">Focus Time (mins):</label>
+      <input type="number" id="custom-pomo-min" min="1" max="180" value="25" />
+    </div>
+    <button id="save-timer-settings" class="timer-btn alt">Apply Settings</button>
+  </div>
+
+  <div class="timer-controls">
+    <button id="timer-start" class="timer-btn"><i class="fas fa-play"></i></button>
+    <button id="timer-reset" class="timer-btn alt"><i class="fas fa-rotate-left"></i></button>
+  </div>
+</div>
+
       <div class="card todo-card" id="notes-card">
         <h3>Quick Notes</h3>
         <div class="todo-input-group">
@@ -117,6 +155,17 @@
       </div>
     </div>
 
+  </div>
+
+  <div id="loc-modal" class="modal">
+    <div class="modal-card">
+      <span class="modal-close" id="loc-modal-close">&times;</span>
+      <h3>Select Orbit Location</h3>
+      <div class="modal-form">
+        <input type="text" id="loc-search-input" placeholder="Enter City Name (e.g. Tokyo, London)" autocomplete="off" />
+        <button id="loc-search-btn">Set Location</button>
+      </div>
+    </div>
   </div>
 
   <div id="bm-modal" class="modal">

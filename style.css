@@ -15,18 +15,17 @@ body {
   overflow-x: hidden;
 }
 
-/* Background Canvas Starfield */
 #starfield {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: -1;
   pointer-events: none;
+  background: #030712;
 }
 
-/* Master Grid Layout */
 .dashboard-container {
   display: grid;
   grid-template-columns: 340px 1fr 320px;
@@ -34,17 +33,17 @@ body {
   padding: 1.5rem;
   max-width: 1440px;
   width: 100%;
-  align-items: start; /* Keeps cards at natural heights */
+  align-items: start; 
 }
 
-/* Column Wrapper Support */
+
 .dash-col, .column {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-/* Top Navigation Bar */
+
 .top-nav {
   grid-column: 1 / -1;
   display: flex;
@@ -115,7 +114,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Glassmorphic Cards Base */
+
 .card {
   background: rgba(17, 24, 39, 0.55);
   backdrop-filter: blur(16px);
@@ -135,7 +134,7 @@ body {
   box-shadow: 0 24px 50px rgba(99, 102, 241, 0.15);
 }
 
-/* Digital Clock Component */
+
 .clock-header {
   display: flex;
   justify-content: space-between;
@@ -189,7 +188,7 @@ body {
   color: #fff;
 }
 
-/* Telemetry Card */
+
 .telemetry-card {
   margin-top: 0;
 }
@@ -246,7 +245,7 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* Search Form Engine */
+
 .search-card {
   padding: 1rem;
 }
@@ -320,7 +319,7 @@ body {
   box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 }
 
-/* NASA APOD Module */
+ 
 .badge {
   background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
   color: white;
@@ -375,7 +374,7 @@ body {
   text-overflow: ellipsis;
 }
 
-/* Quick Notes Module */
+
 .todo-input-group {
   display: flex;
   gap: 0.5rem;
@@ -434,14 +433,12 @@ body {
   font-size: 0.9rem;
 }
 
-/* Responsive Viewports */
 @media (max-width: 1024px) {
   .dashboard-container {
     grid-template-columns: 1fr;
   }
 }
 
-/* Centered Search Engine Bar Styling */
 .center-col {
   display: flex;
   flex-direction: column;
@@ -451,7 +448,7 @@ body {
 .center-col .search-card {
   width: 100%;
   padding: 1rem 1.25rem;
-  background: rgba(17, 24, 39, 0.7); /* Slightly darker for hero emphasis */
+  background: rgba(17, 24, 39, 0.7); 
   box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
 }
 
@@ -699,4 +696,120 @@ body {
   color: #fff;
   font-weight: 600;
   cursor: pointer;
+}
+
+.theme-controls {
+  position: relative;
+}
+
+.theme-popover {
+  display: none;
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: rgba(17, 24, 39, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  padding: 1rem;
+  border-radius: 12px;
+  width: 200px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  z-index: 200;
+}
+
+.theme-popover.active {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.theme-popover label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: #a5b4fc;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.icon-btn:hover {
+  color: #fff;
+}
+
+.timer-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0.75rem 0;
+  color: #6366f1;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.timer-btn {
+  background: #6366f1;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.timer-btn.alt {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.timer-mode-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.timer-mode-controls .icon-btn {
+  opacity: 0.5;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.timer-mode-controls .icon-btn.active-mode {
+  opacity: 1;
+  color: #818cf8;
+}
+
+.timer-settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.5rem 0 1rem 0;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.setting-row input {
+  width: 60px;
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  text-align: center;
 }
