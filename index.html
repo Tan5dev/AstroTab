@@ -8,42 +8,46 @@
 </head>
 <body>
   <div class="dashboard-container">
-
-    <div class="column">
-      <div class="card" id="clock-card">
+  
+  <div class="column">
+    <div class="card" id="clock-card">
+      <div class="clock-header">
         <h1 class="clock" id="clock">00:00:00</h1>
-        <p class="greeting" id="greeting">Initializing...</p>
+        <button id="format-toggle" class="toggle-btn">12H</button>
       </div>
+      <p class="greeting" id="greeting">Initializing...</p>
     </div>
 
     <div class="card">
-        <form action="https://www.google.com/search" method="GET" class="search-form" target="_blank">
-            <input type="text" name="q" placeholder="Search Google..." autocomplete="off" required />
-            <button type="submit">Search</button>
-        </form>
-    </div>
-
-    <div class="column">
-      <div class="card apod-card" id="nasa-card">
-        <div class="card header">
-            <span class="badge">NASA APOD</span>
-            <span id="apod-date" class="date-tag">Today</span>
-        </div>
-        <h2 id="apod-title">Fetching deep space data...</h2>
-        <div class="image-wrapper">
-            <img id="apod-image" src="" alt="Astronomy Picture of the Day" />
-        </div>
-        <p id="apod-img" src="" alt="Astronomy Picture of the Day"></p>
-      </div>
-    </div>
-
-    <div class="column">
-      <div class="card" id="notes-card">
-        <h2>Quick Notes</h2>
-        <p>Notes widget placeholder...</p>
-      </div>
+      <form action="https://www.google.com/search" method="GET" class="search-form" target="_blank">
+        <input type="text" name="q" placeholder="Search Google..." autocomplete="off" required />
+        <button type="submit">Search</button>
+      </form>
     </div>
   </div>
+
+  <div class="column">
+    <div class="card apod-card" id="nasa-card">
+      <div class="card-header">
+        <span class="badge">NASA APOD</span>
+        <span id="apod-date" class="date-tag">Today</span>
+      </div>
+      <h2 id="apod-title">Fetching space data...</h2>
+      <div class="image-wrapper">
+        <img id="apod-img" src="" alt="Astronomy Picture of the Day" style="display: none;" />
+      </div>
+      <p id="apod-desc" class="apod-desc"></p>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card" id="notes-card">
+      <h2>Quick Notes</h2>
+      <p>Notes widget placeholder...</p>
+    </div>
+  </div>
+
+</div>
 </body>
 <script src="script.js"></script>
 </html>
