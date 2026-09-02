@@ -13,55 +13,101 @@
 
 <body>
   <canvas id="starfield"></canvas>
-  <div class="dashboard-container">
   
-  <div class="column">
-    <div class="card" id="clock-card">
-      <div class="clock-header">
-        <h1 class="clock" id="clock">00:00:00</h1>
-        <button id="format-toggle" class="toggle-btn">12H</button>
+  <div class="dashboard-container">
+    
+    <!-- Top Command Navigation Bar -->
+    <header class="top-nav">
+      <div class="brand">
+        <span class="pulse-dot"></span>
+        <span class="brand-name">ASTRO // OS</span>
       </div>
-      <p class="greeting" id="greeting">Initializing...</p>
-    </div>
-
-    <div class="card">
-      <form action="https://www.google.com/search" method="GET" target="_blank" class="search-form">
-    <div class="input-wrapper">
-      <i class="fas fa-search search-icon"></i>
-      <input type="text" name="q" placeholder="Search Google or type a URL..." required autocomplete="off" />
-      <span class="hotkey-badge">/</span>
-    </div>
-    <button type="submit">Search</button>
-  </form>
-    </div>
-  </div>
-
-<div class="column">
-  <div class="card apod-card" id="nasa-card">
-    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-      <span class="badge">NASA APOD</span>
-      <span id="apod-date" class="date-tag">Today</span>
-    </div>
-    <h2 id="apod-title">Fetching space data...</h2>
-    <div class="image-wrapper">
-      <img id="apod-img" src="" alt="Astronomy Picture of the Day" style="display: none;" />
-    </div>
-    <p id="apod-desc" class="apod-desc"></p>
-  </div>
-</div>
-
-  <div class="column">
-    <div class="card todo-card" id="notes-card">
-      <h3>Quick Notes</h3>
-      <div class="todo-input-group">
-        <input type="text" id="todo-input" placeholder="Add a Quick Task..." autocomplete="off"/>
-        <button id="todo-add">+</button>
+      <div class="quick-links">
+        <a href="https://github.com" target="_blank" class="shortcut-btn" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://youtube.com" target="_blank" class="shortcut-btn" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://google.com" target="_blank" class="shortcut-btn" title="Google"><i class="fab fa-google"></i></a>
+        <a href="https://nasa.gov" target="_blank" class="shortcut-btn" title="NASA"><i class="fas fa-rocket"></i></a>
       </div>
-      <ul id="todo-list" class="todo-list"></ul>      
+    </header>
+
+    <!-- LEFT SIDEBAR: Clock & Telemetry -->
+    <div class="dash-col">
+      <!-- Digital Clock Card -->
+      <div class="card" id="clock-card">
+        <div class="clock-header">
+          <h1 class="clock" id="clock">00:00:00</h1>
+          <button id="format-toggle" class="toggle-btn">12H</button>
+        </div>
+        <p class="greeting" id="greeting">Initializing...</p>
+      </div>
+
+      <!-- Live Telemetry Card -->
+      <div class="card telemetry-card">
+        <div class="card-header">
+          <span class="badge"><i class="fas fa-satellite"></i> TELEMETRY</span>
+          <span id="location-name" class="sub-text">Scanning Location...</span>
+        </div>
+        <div class="telemetry-grid">
+          <div class="telemetry-item">
+            <i id="weather-icon" class="fas fa-cloud-sun weather-i"></i>
+            <div>
+              <div id="weather-temp" class="stat-value">--°C</div>
+              <div id="weather-desc" class="stat-label">Detecting...</div>
+            </div>
+          </div>
+          <div class="telemetry-item alt-item">
+            <i class="fas fa-compass weather-i"></i>
+            <div>
+              <div id="weather-coords" class="stat-value small-text">0.00° N, 0.00° E</div>
+              <div class="stat-label">ORBITAL COORDS</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- CENTER COLUMN: Search Bar (Top) & NASA APOD (Below) -->
+    <div class="dash-col center-col">
+      <!-- Center Google Search Bar -->
+      <div class="card search-card">
+        <form action="https://www.google.com/search" method="GET" target="_blank" class="search-form">
+          <div class="input-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" name="q" placeholder="Search Google or type a URL..." required autocomplete="off" />
+            <span class="hotkey-badge">/</span>
+          </div>
+          <button type="submit">Search</button>
+        </form>
+      </div>
+
+      <!-- NASA APOD Card -->
+      <div class="card apod-card" id="nasa-card">
+        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="badge">NASA APOD</span>
+          <span id="apod-date" class="date-tag">Today</span>
+        </div>
+        <h2 id="apod-title">Fetching space data...</h2>
+        <div class="image-wrapper">
+          <img id="apod-img" src="" alt="Astronomy Picture of the Day" style="display: none;" />
+        </div>
+        <p id="apod-desc" class="apod-desc"></p>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR: Quick Notes -->
+    <div class="dash-col">
+      <div class="card todo-card" id="notes-card">
+        <h3>Quick Notes</h3>
+        <div class="todo-input-group">
+          <input type="text" id="todo-input" placeholder="Add a Quick Task..." autocomplete="off"/>
+          <button id="todo-add">+</button>
+        </div>
+        <ul id="todo-list" class="todo-list"></ul>      
+      </div>
+    </div>
+
   </div>
 
-</div>
+  <script type="module" src="/script.js"></script>
 </body>
-<script type="module" src="/script.js"></script>
 </html>

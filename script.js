@@ -198,3 +198,38 @@ if (canvas) {
   initStars();
   drawStars();
 }
+
+async function fetchWeather(lat, lon) {
+  const tempEl = document.getElementById('weather-temp');
+  const descEl = document.getElementById('weather-desc');
+  const coordsEl = document.getElementById('weather-coords');
+  const locEl = document.getElementById('location-name');
+
+  if (coordsEl) coordsEl.innerText = `${lat.toFixed(2)}° N, ${lon.toFixed(2)}° E`;
+
+  try {
+    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+    const data = await res.json();
+    const weather = data.current_weather;
+
+    if (tempEl) tempEl.innerText = `${Math.round(weather.temperature)}°C`;
+    if (descEl) descEl.innerText = `Wind: ${weather.windspeed} km/h`;
+    if (locEl) locEl.innerText = "LOCAL ATMOSPHERE";
+  } catch (err) {
+    if (descEl) descEl.innerText = "Telemetry Offline";
+  }
+}
+
+function initTelemetry() {
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => fetchWeather(pos.coords.latitude, pos.coords.longitude),
+      () => fetchWeather(18.62, 73.80) // Fallback default coordinates
+    );
+  } else {
+    fetchWeather(18.62, 73.80);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initTelemetry);
+initTelemetry();
