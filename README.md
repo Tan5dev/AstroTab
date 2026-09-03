@@ -77,7 +77,7 @@ Most of the project was built from scratch while experimenting with UI design, A
 <table>
   <tr>
     <td width="35%" align="center">
-      <img src="./assets/NASA_APOD.png" width="250">
+      <img src="./assets/Promodo_Timer.png" width="250">
     </td>
     <td width="65%">
       <ul>
@@ -107,7 +107,7 @@ Most of the project was built from scratch while experimenting with UI design, A
       </ul>
     </td>
     <td width="35%" align="center">
-      <img src="./assets/Quick_Notes.png" width="250">
+      <img src="./assets/Telemetry.png" width="250">
     </td>
   </tr>
 </table>
@@ -117,7 +117,7 @@ Most of the project was built from scratch while experimenting with UI design, A
 <table>
   <tr>
     <td width="35%" align="center">
-      <img src="./assets/NASA_APOD.png" width="250">
+      <img src="./assets/Sound.png" width="250">
     </td>
     <td width="65%">
       <ul>
@@ -144,7 +144,7 @@ Most of the project was built from scratch while experimenting with UI design, A
       </ul>
     </td>
     <td width="35%" align="center">
-      <img src="./assets/Quick_Notes.png" width="250">
+      <img src="./assets/Header.png" width="250">
     </td>
   </tr>
 </table>
@@ -154,7 +154,7 @@ Most of the project was built from scratch while experimenting with UI design, A
 <table>
   <tr>
     <td width="35%" align="center">
-      <img src="./assets/NASA_APOD.png" width="250">
+      <img src="./assets/SearchBar.png" width="250">
     </td>
     <td width="65%">
       <ul>
@@ -166,31 +166,12 @@ Most of the project was built from scratch while experimenting with UI design, A
   </tr>
 </table>
 
-* ### Bookmark Shortcuts
-
-<table>
-  <tr>
-    <td width="65%">
-      <ul>
-        <li>Add custom website bookmarks through a glassmorphic modal.</li>
-        <li>Automatic <code>https://</code> formatting for links.</li>
-        <li>Website favicons for visual shortcuts.</li>
-        <li>Remove bookmarks instantly.</li>
-        <li>Persistent bookmark storage using <code>localStorage</code>.</li>
-      </ul>
-    </td>
-    <td width="35%" align="center">
-      <img src="./assets/Quick_Notes.png" width="250">
-    </td>
-  </tr>
-</table>
-
 * ### Interactive Canvas Starfield
 
 <table>
   <tr>
   <td width="35%" align="center">
-      <img src="./assets/Quick_Notes.png" width="250">
+      <img src="./assets/Starfield.png" width="250">
     </td>
     <td width="65%">
       <ul>
@@ -216,7 +197,7 @@ Most of the project was built from scratch while experimenting with UI design, A
       </ul>
     </td>
     <td width="35%" align="center">
-      <img src="./assets/Quick_Notes.png" width="250">
+      <img src="./assets/Header.png" width="250">
     </td>
   </tr>
 </table>
@@ -225,9 +206,6 @@ Most of the project was built from scratch while experimenting with UI design, A
 
 <table>
   <tr>
-  <td width="35%" align="center">
-      <img src="./assets/Quick_Notes.png" width="250">
-    </td>
     <td width="65%">
       <ul>
         <li>Protected initialization for major dashboard modules.</li>
