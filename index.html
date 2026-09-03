@@ -22,14 +22,14 @@
     
     <div class="nav-center">
       <div class="quick-links" id="bookmarks-bar"></div>
-      <button id="add-bookmark-btn" class="shortcut-btn add-btn" title="Add Bookmark"><i class="fas fa-plus"></i></button>
+      <button id="add-bookmark-btn" class="shortcut-btn add-btn" title="Add Bookmark" data-modal="bm-modal"><i class="fas fa-plus"></i></button>
     </div>
 
     <div class="theme-controls">
       <button id="theme-btn" class="shortcut-btn" title="Customize Theme"><i class="fas fa-sliders"></i></button>
       <div id="theme-popover" class="theme-popover">
         <label>Blur Intensity</label>
-        <input type="range" id="blur-slider" min="0" max="30" value="12" />
+        <input type="range" id="blur-slider" min="0" max="30" value="12" oninput="document.documentElement.style.setProperty('--blur-val', this.value + 'px')" />
         <label>Star Density</label>
         <input type="range" id="stars-slider" min="50" max="400" value="150" />
       </div>
@@ -200,5 +200,6 @@
   </div>
 
   <script type="module" src="/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

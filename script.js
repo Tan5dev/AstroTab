@@ -270,7 +270,29 @@ const defaultBookmarks = [
   { name: 'YouTube', url: 'https://youtube.com' },
   { name: 'Google', url: 'https://google.com' }
 ];
+
 let bookmarks = JSON.parse(localStorage.getItem('astro_bookmarks')) || defaultBookmarks;
+const addBmBtn = document.getElementById('add-bookmark-btn');
+const bmModal = document.getElementById('bm-modal');
+const bmCloseBtn = document.getElementById('bm-modal-close');
+
+if (addBmBtn && bmModal) {
+  addBmBtn.addEventListener('click', () => {
+    bmModal.style.display = 'flex';
+  });
+}
+
+if (bmCloseBtn && bmModal) {
+  bmCloseBtn.addEventListener('click', () => {
+    bmModal.style.display = 'none';
+  });
+}
+
+window.addEventListener('click', (e) => {
+  if (e.target === bmModal) {
+    bmModal.style.display = 'none';
+  }
+});
 
 function renderBookmarks() {
   const container = document.getElementById('bookmarks-bar');
@@ -293,6 +315,33 @@ function renderBookmarks() {
     } catch (e) {}
   });
 }
+
+document.getElementById('bm-save-btn')?.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  const nameInput = document.getElementById('bm-name-input');
+  const urlInput = document.getElementById('bm-url-input');
+
+  const name = nameInput?.value.trim();
+  let url = urlInput?.value.trim();
+
+  if (!name || !url) {
+    alert('Please provide both a name and a URL.');
+    return;
+  }
+
+  if (!/^https?:\/\//i.test(url)) {
+    url = 'https://' + url;
+  }
+
+  bookmarks.push({ name, url });
+  localStorage.setItem('astro_bookmarks', JSON.stringify(bookmarks));
+  renderBookmarks();
+
+  if (nameInput) nameInput.value = '';
+  if (urlInput) urlInput.value = '';
+  if (bmModal) bmModal.style.display = 'none';
+});
 
 window.removeBookmark = (index) => {
   bookmarks.splice(index, 1);
