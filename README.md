@@ -23,9 +23,9 @@ Most of the project was built from scratch while experimenting with UI design, A
   <tr>
     <td width="65%">
       <ul>
-       Real-time clock with dynamic AM/PM tracking.
-       12-Hour and 24-Hour format toggling.
-       Time-based greetings that change between Morning, Afternoon, and Evening.
+       <li>Real-time clock with dynamic AM/PM tracking.</li>
+       <li>12-Hour and 24-Hour format toggling.</li>
+       <li>Time-based greetings that change between Morning, Afternoon, and Evening.</li>
       </ul>
     </td>
     <td width="35%" align="center">
@@ -44,11 +44,11 @@ Most of the project was built from scratch while experimenting with UI design, A
     </td>
     <td width="65%">
       <ul>
-       Daily astronomy images and video content fetched from NASA's APOD API.
-       HD image viewing with an expanded modal.
-       Support for both image and video APOD content.
-       Cached APOD data using <code>localStorage</code>.
-       Fallback content and error handling for API failures and rate limits.
+       <li>Daily astronomy images and video content fetched from NASA's APOD API.</li>
+       <li> HD image viewing with an expanded modal.</li>
+       <li>Support for both image and video APOD content.</li>
+       <li>Cached APOD data using <code>localStorage</code>.</li>
+       <li>Fallback content and error handling for API failures and rate limits.</li>
       </ul>
     </td>
   </tr>
@@ -60,10 +60,10 @@ Most of the project was built from scratch while experimenting with UI design, A
   <tr>
     <td width="65%">
       <ul>
-       Add and remove notes directly from the dashboard.
-       Persistent storage using <code>localStorage</code>.
-       Pending and completed task states with interactive checkboxes.
-       Completed tasks receive visual cross-out styling.
+       <li>Add and remove notes directly from the dashboard.</li>
+       <li>Persistent storage using <code>localStorage</code>.</li>
+       <li>Pending and completed task states with interactive checkboxes.</li>
+       <li>Completed tasks receive visual cross-out styling.</li>
       </ul>
     </td>
     <td width="35%" align="center">
@@ -81,13 +81,13 @@ Most of the project was built from scratch while experimenting with UI design, A
     </td>
     <td width="65%">
       <ul>
-       Pomodoro countdown mode for focused sessions.
-       Stopwatch mode for tracking elapsed time.
-       Support for both image and video APOD content.
-       Custom session durations from 1 to 180 minutes.
-       Adaptive time display for both short and long sessions.
-       Timer preferences saved using <code>localStorage</code>.
-       Start, pause, reset, and mode switching controls.
+       <li>Pomodoro countdown mode for focused sessions.</li>
+       <li>Stopwatch mode for tracking elapsed time.</li>
+       <li>Support for both image and video APOD content.</li>
+       <li>Custom session durations from 1 to 180 minutes.</li>
+       <li>Adaptive time display for both short and long sessions.</li>
+       <li>Timer preferences saved using <code>localStorage</code>.</li>
+       <li>Start, pause, reset, and mode switching controls.</li>
       </ul>
     </td>
   </tr>
@@ -99,11 +99,11 @@ Most of the project was built from scratch while experimenting with UI design, A
   <tr>
     <td width="65%">
       <ul>
-       Live weather information using the Open-Meteo API.
-       Current temperature and wind speed display.
-       Latitude and longitude orbital/location telemetry.
-       City search and geocoding modal for manually selecting locations.
-       Automatic location detection with fallback handling.
+       <li>Live weather information using the Open-Meteo API.</li>
+       <li>Current temperature and wind speed display.</li>
+       <li>Latitude and longitude orbital/location telemetry.</li>
+       <li>City search and geocoding modal for manually selecting locations.</li>
+       <li>Automatic location detection with fallback handling.</li>
       </ul>
     </td>
     <td width="35%" align="center">
@@ -121,10 +121,10 @@ Most of the project was built from scratch while experimenting with UI design, A
     </td>
     <td width="65%">
       <ul>
-       Browser-based ambient sound generation using the Web Audio API.
-       Cosmic and Rain sound profiles.
-       Start and pause controls.
-       Real-time volume adjustment with an inline slider.
+       <li>Browser-based ambient sound generation using the Web Audio API.</li>
+       <li>Cosmic and Rain sound profiles.</li>
+       <li>Start and pause controls.</li>
+       <li>Real-time volume adjustment with an inline slider.</li>
       </ul>
     </td>
   </tr>
@@ -136,11 +136,11 @@ Most of the project was built from scratch while experimenting with UI design, A
   <tr>
     <td width="65%">
       <ul>
-       Add custom website bookmarks through a glassmorphic modal.
-       Automatic <code>https://</code> formatting for links.
-       Website favicons for visual shortcuts.
-       Remove bookmarks instantly.
-       Persistent bookmark storage using <code>localStorage</code>.
+       <li>Add custom website bookmarks through a glassmorphic modal.</li>
+       <li>Automatic <code>https://</code> formatting for links.</li>
+       <li>Website favicons for visual shortcuts.</li>
+       <li>Remove bookmarks instantly.</li>
+       <li>Persistent bookmark storage using <code>localStorage</code>.</li>
       </ul>
     </td>
     <td width="35%" align="center">
@@ -158,9 +158,9 @@ Most of the project was built from scratch while experimenting with UI design, A
     </td>
     <td width="65%">
       <ul>
-       Integrated Google search directly from the dashboard.
-       Supports entering URLs for quick website access.
-       Centered search interface integrated into the main dashboard layout.
+       <li>Integrated Google search directly from the dashboard.</li>
+       <li>Supports entering URLs for quick website access.</li>
+       <li>Centered search interface integrated into the main dashboard layout.</li>
       </ul>
     </td>
   </tr>
@@ -175,10 +175,10 @@ Most of the project was built from scratch while experimenting with UI design, A
     </td>
     <td width="65%">
       <ul>
-       Animated HTML5 Canvas starfield background.
-       Twinkling and pulsing star particles.
-       Adjustable star density using a live slider.
-       Real-time canvas updates when changing the density.
+       <li>Animated HTML5 Canvas starfield background.</li>
+       <li>Twinkling and pulsing star particles.</li>
+       <li>Adjustable star density using a live slider.</li>
+       <li>Real-time canvas updates when changing the density.</li>
       </ul>
     </td>
   </tr>
@@ -190,10 +190,10 @@ Most of the project was built from scratch while experimenting with UI design, A
   <tr>
     <td width="65%">
       <ul>
-       Adjustable backdrop blur across dashboard cards.
-       Live blur control for customizing the glassmorphism effect.
-       Space-themed interface with responsive dashboard layout.
-       Fixed navigation header for easier access while scrolling.
+       <li>Adjustable backdrop blur across dashboard cards.</li>
+       <li>Live blur control for customizing the glassmorphism effect.</li>
+       <li>Space-themed interface with responsive dashboard layout.</li>
+       <li>Fixed navigation header for easier access while scrolling.</li>
       </ul>
     </td>
     <td width="35%" align="center">
