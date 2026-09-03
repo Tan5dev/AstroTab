@@ -42,7 +42,7 @@ async function fetchAPOD() {
   const imgWrapper = document.getElementById('apod-trigger');
 
   const apiKey = import.meta.env.VITE_NASA_API_KEY || 'DEMO_KEY';
-const url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+  const url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
 
   try {
     const res = await fetch(url);
@@ -82,6 +82,74 @@ const url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
     }
   }
 }
+
+let tasks = JSON.parse(localStorage.getItem('astro_tasks')) || [];
+
+function renderTasks() {
+  const pendingEl = document.getElementById('pending-list');
+  const completedEl = document.getElementById('completed-list');
+
+  if (!pendingEl || !completedEl) return;
+
+  pendingEl.innerHTML = '';
+  completedEl.innerHTML = '';
+
+  tasks.forEach((task, index) => {
+    const li = document.createElement('li');
+    li.className = `todo-item ${task.completed ? 'completed' : ''}`;
+    
+    li.innerHTML = `
+      <div class="todo-item-left">
+        <input 
+          type="checkbox" 
+          class="todo-checkbox" 
+          ${task.completed ? 'checked' : ''} 
+          onchange="toggleTask(${index})"
+        />
+        <span>${task.text}</span>
+      </div>
+      <button class="delete-task-btn" onclick="deleteTask(${index})">&times;</button>
+    `;
+
+    if (task.completed) {
+      completedEl.appendChild(li);
+    } else {
+      pendingEl.appendChild(li);
+    }
+  });
+}
+
+function addTask() {
+  const input = document.getElementById('todo-input');
+  const text = input?.value.trim();
+
+  if (text) {
+    tasks.push({ text, completed: false });
+    localStorage.setItem('astro_tasks', JSON.stringify(tasks));
+    if (input) input.value = '';
+    renderTasks();
+  }
+}
+
+window.toggleTask = (index) => {
+  tasks[index].completed = !tasks[index].completed;
+  localStorage.setItem('astro_tasks', JSON.stringify(tasks));
+  renderTasks();
+};
+
+window.deleteTask = (index) => {
+  tasks.splice(index, 1);
+  localStorage.setItem('astro_tasks', JSON.stringify(tasks));
+  renderTasks();
+};
+
+document.getElementById('todo-add')?.addEventListener('click', addTask);
+document.getElementById('todo-input')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    addTask();
+  }
+});
 
 async function fetchWeather(lat, lon, locName = 'Local Station') {
   const tempEl = document.getElementById('weather-temp');
@@ -257,9 +325,20 @@ let timerSeconds = customPomoMinutes * 60;
 function updateTimerDisplay() {
   const display = document.getElementById('timer-display');
   if (!display) return;
-  const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
-  const secs = String(timerSeconds % 60).padStart(2, '0');
-  display.textContent = `${mins}:${secs}`;
+
+  const hours = Math.floor(timerSeconds / 3600);
+  const mins = Math.floor((timerSeconds % 3600) / 60);
+  const secs = timerSeconds % 60;
+
+  const formattedMins = String(mins).padStart(2, '0');
+  const formattedSecs = String(secs).padStart(2, '0');
+
+  if (hours > 0) {
+    const formattedHours = String(hours).padStart(2, '0');
+    display.textContent = `${formattedHours}:${formattedMins}:${formattedSecs}`;
+  } else {
+    display.textContent = `${formattedMins}:${formattedSecs}`;
+  }
 }
 
 function resetTimerState() {
@@ -372,7 +451,6 @@ blurSlider?.addEventListener('input', (e) => {
   });
 });
 
-
 const canvas = document.getElementById('starfield');
 const ctx = canvas ? canvas.getContext('2d') : null;
 
@@ -435,5 +513,6 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchAPOD();
   initTelemetry();
   renderBookmarks();
+  renderTasks();
   updateTimerDisplay();
 });
