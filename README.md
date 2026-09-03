@@ -1,227 +1,175 @@
 # AstroTab
 
-AstroTab is a space-themed productivity dashboard I built around astronomy, with a few tools that I actually wanted to use while studying.
+AstroTab is my space themed productivity dashboard with some features that I wanted to use while studying.
 
-[![AstroTab Screenshot](./assets/Main.png)](https://github.com/Tan5Dev/AstroTab)
+![AstroTab Screenshot](./assets/Main.png)
 
-The main idea was to make a dashboard that feels like a small space command center while still being useful for everyday tasks.
+The goal was to make a dashboard similar to a small space command while being functional for day to day use.
 
-It includes a real-time clock, NASA's Astronomy Picture of the Day, weather and orbital telemetry, quick notes, bookmarks, a Google search bar, ambient soundscapes, and a focus timer.
+It features a clock, Astronomy Picture of the Day by NASA, weather and orbital telemetry, quick notes and bookmarks, Google search bar, ambient soundscapes and a focus timer.
 
-The focus timer supports both Pomodoro countdown and stopwatch modes, with custom session durations. I also added settings for things like starfield density, glass blur, sound volume, and location.
+AstroTab uses NASA's APOD API for the astronomy part and the Open-Meteo API for the weather and geocoding. I've used `localStorage` to keep certain preferences and data for the dashboard.
 
-AstroTab uses NASA's APOD API for the astronomy content and Open-Meteo for weather and geocoding data. Some preferences and data are stored using localStorage so the dashboard can remember things between sessions.
+It started as a simple project made by HTML, CSS and JavaScript but as the project grew, I transfered it to Vite for easier organisation.
 
-I started building AstroTab as a simple HTML, CSS and JavaScript project, but as it grew I moved it to Vite to make development and organization easier.
+It features most things that I've made myself while experimenting with UI design, APIs, browser tools, localStorage, Canvas, Web Audio API and responsive design.
 
-Most of the project was built from scratch while experimenting with UI design, APIs, browser features, localStorage, Canvas, Web Audio API and responsive layouts.
+## Features
 
-## AstroTab Dashboard Features
-* ### Digital Clock & Greeting Engine
+### Digital Clock & Greeting Engine
 
-<table>
-  <tr>
-    <td width="65%">
-      <ul>
-       <li>Real-time clock with dynamic AM/PM tracking.</li>
-       <li>12-Hour and 24-Hour format toggling.</li>
-       <li>Time-based greetings that change between Morning, Afternoon, and Evening.</li>
-      </ul>
-    </td>
-    <td width="35%" align="center">
-      <img src="./assets/Time.png" width="250">
-    </td>
-  </tr>
-</table>
+Real-time clock with AM/PM tracking.
 
-  
-* ### NASA APOD
+Toggle for 12-hour and 24-hour format.
 
-<table>
-  <tr>
-    <td width="35%" align="center">
-      <img src="./assets/NASA_APOD.png" width="250">
-    </td>
-    <td width="65%">
-      <ul>
-       <li>Daily astronomy images and video content fetched from NASA's APOD API.</li>
-       <li> HD image viewing with an expanded modal.</li>
-       <li>Support for both image and video APOD content.</li>
-       <li>Cached APOD data using <code>localStorage</code>.</li>
-       <li>Fallback content and error handling for API failures and rate limits.</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+Time-based greetings that changes between Morning, Afternoon and Evening.
 
-* ### Quick Notes & Task Management
+![Clock](./assets/Time.png)
 
-<table>
-  <tr>
-    <td width="65%">
-      <ul>
-       <li>Add and remove notes directly from the dashboard.</li>
-       <li>Persistent storage using <code>localStorage</code>.</li>
-       <li>Pending and completed task states with interactive checkboxes.</li>
-       <li>Completed tasks receive visual cross-out styling.</li>
-      </ul>
-    </td>
-    <td width="35%" align="center">
-      <img src="./assets/Quick_Notes.png" width="250">
-    </td>
-  </tr>
-</table>
-  
-* ### Focus Timer & Stopwatch
+### NASA APOD
 
-<table>
-  <tr>
-    <td width="35%" align="center">
-      <img src="./assets/Promodo_Timer.png" width="250">
-    </td>
-    <td width="65%">
-      <ul>
-       <li>Pomodoro countdown mode for focused sessions.</li>
-       <li>Stopwatch mode for tracking elapsed time.</li>
-       <li>Support for both image and video APOD content.</li>
-       <li>Custom session durations from 1 to 180 minutes.</li>
-       <li>Adaptive time display for both short and long sessions.</li>
-       <li>Timer preferences saved using <code>localStorage</code>.</li>
-       <li>Start, pause, reset, and mode switching controls.</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+Daily astronomy content fetched from NASA's APOD API.
 
-* ### Weather & Orbital Telemetry
+Support for both image and video APOD.
 
-<table>
-  <tr>
-    <td width="65%">
-      <ul>
-       <li>Live weather information using the Open-Meteo API.</li>
-       <li>Current temperature and wind speed display.</li>
-       <li>Latitude and longitude orbital/location telemetry.</li>
-       <li>City search and geocoding modal for manually selecting locations.</li>
-       <li>Automatic location detection with fallback handling.</li>
-      </ul>
-    </td>
-    <td width="35%" align="center">
-      <img src="./assets/Telemetry.png" width="250">
-    </td>
-  </tr>
-</table>
+HD view for images with an expanded modal.
 
-* ### Cosmic Soundscapes
+Cached APOD data using `localStorage`.
 
-<table>
-  <tr>
-    <td width="35%" align="center">
-      <img src="./assets/Sound.png" width="250">
-    </td>
-    <td width="65%">
-      <ul>
-       <li>Browser-based ambient sound generation using the Web Audio API.</li>
-       <li>Cosmic and Rain sound profiles.</li>
-       <li>Start and pause controls.</li>
-       <li>Real-time volume adjustment with an inline slider.</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+Fallback content and error handling for APOD API failures and rate limits.
 
-* ### Bookmark Shortcuts
+![NASA APOD](./assets/NASA_APOD.png)
 
-<table>
-  <tr>
-    <td width="65%">
-      <ul>
-       <li>Add custom website bookmarks through a glassmorphic modal.</li>
-       <li>Automatic <code>https://</code> formatting for links.</li>
-       <li>Website favicons for visual shortcuts.</li>
-       <li>Remove bookmarks instantly.</li>
-       <li>Persistent bookmark storage using <code>localStorage</code>.</li>
-      </ul>
-    </td>
-    <td width="35%" align="center">
-      <img src="./assets/Header.png" width="250">
-    </td>
-  </tr>
-</table>
+### Quick Notes & Task Management
 
-* ### Google Search & URL Launcher
+Adding and removing tasks from the dashboard.
 
-<table>
-  <tr>
-    <td width="35%" align="center">
-      <img src="./assets/SearchBar.png" width="250">
-    </td>
-    <td width="65%">
-      <ul>
-       <li>Integrated Google search directly from the dashboard.</li>
-       <li>Supports entering URLs for quick website access.</li>
-       <li>Centered search interface integrated into the main dashboard layout.</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+Persistence using `localStorage`.
 
-* ### Interactive Canvas Starfield
+Task states with checkboxes for pending and completed tasks.
 
-<table>
-  <tr>
-  <td width="35%" align="center">
-      <img src="./assets/Starfield.png" width="250">
-    </td>
-    <td width="65%">
-      <ul>
-       <li>Animated HTML5 Canvas starfield background.</li>
-       <li>Twinkling and pulsing star particles.</li>
-       <li>Adjustable star density using a live slider.</li>
-       <li>Real-time canvas updates when changing the density.</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+Cross-out styling for completed tasks.
 
-* ### Glassmorphism & Interface Customization
+![Quick Notes](./assets/Quick_Notes.png)
 
-<table>
-  <tr>
-    <td width="65%">
-      <ul>
-       <li>Adjustable backdrop blur across dashboard cards.</li>
-       <li>Live blur control for customizing the glassmorphism effect.</li>
-       <li>Space-themed interface with responsive dashboard layout.</li>
-       <li>Fixed navigation header for easier access while scrolling.</li>
-      </ul>
-    </td>
-    <td width="35%" align="center">
-      <img src="./assets/Header.png" width="250">
-    </td>
-  </tr>
-</table>
+### Focus Timer & Stopwatch
 
-* ### API Resiliency & Error Handling
+Pomodoro countdown mode for focus sessions.
 
+Stopwatch mode for measuring time.
 
-  * Protected initialization for major dashboard modules.
-  * Handles NASA API rate limits and authentication errors.
-  * Fallback states when external APIs are unavailable.
-  * APOD support for different media types.
-  * Environment variables used for API configuration.
-      
+Session duration customisation from 1 to 180 minutes.
+
+Time display that adapts to short and long sessions.
+
+Timer preferences using `localStorage`.
+
+Start, pause, reset and mode buttons.
+
+![Focus Timer](./assets/Promodo_Timer.png)
+
+### Weather & Orbital Telemetry
+
+Live weather information using the Open-Meteo API.
+
+Current temperature and wind speed display.
+
+Latitude and longitude location telemetry.
+
+City search and geocoding modal for manual location choosing.
+
+Automatic location detection fallback.
+
+![Telemetry](./assets/Telemetry.png)
+
+### Cosmic Soundscapes
+
+Browser-based ambient sound generation using the Web Audio API.
+
+Cosmic and Rain sound profiles.
+
+Start and pause controls.
+
+Inline volume control with a slider.
+
+![Soundscapes](./assets/Sound.png)
+
+### Bookmark Shortcuts
+
+Add custom website bookmarks using a glassmorphic modal.
+
+Auto-formatted `https://` links.
+
+Website favicons for shortcuts.
+
+Removing bookmarks instantly.
+
+Bookmark persistence using `localStorage`.
+
+![Bookmarks](./assets/Header.png)
+
+### Google Search & URL Launcher
+
+Integrated Google search system on the dashboard.
+
+Entering URLs for quick website access.
+
+Centred search interface within the dashboard.
+
+![Search Bar](./assets/SearchBar.png)
+
+### Interactive Canvas Starfield
+
+Animated HTML5 Canvas starfield background.
+
+Twinkling and pulsing star particles.
+
+Star density customisation using a live slider.
+
+Live canvas updates when changing density.
+
+![Starfield](./assets/Starfield.png)
+
+### Glassmorphism & Interface Customization
+
+Adjust backdrop blur for all cards.
+
+Live blur customisation for glassmorphism.
+
+Space themed interface and responsive dashboard layout.
+
+Fixed navigation header for easier scrolling access.
+
+![Interface](./assets/Header.png)
+
+### API Resiliency & Error Handling
+
+Protected initialisations for the main dashboard modules.
+
+Handling NASA API rate limits and authentication errors.
+
+Fallback states when external APIs are unreachable.
+
+APOD support for different media types.
+
+Environment variables for API configuration.
 
 ## AI Usage
 
-I mainly built the project myself. I used GitHub Copilot only for minor assistance, mostly for code autocomplete and small suggestions while writing the project.
+I have used GitHub Copilot for some minor assistance, mostly for code autocomplete and suggestions while developing the project.
 
-I also used AI for a little bit of help while connecting and working with APIs and understanding some implementation details. The overall design, features, structure and development of AstroTab were done by me.
+I have also used AI occasionally outside of the project when working with APIs and some concepts.
 
-This is the first shipped version of AstroTab. I have more ideas for it, but I'll be working on those in future development.
+## Development
+
+This is the first shipped version of AstroTab.
+
+I started from the project idea of learning how to build a astronomy-themed dashboard and slowly added on features that I found useful. Some parts of the dashboard have changed significantly as I worked on the prototype and experimented with the APIs, interactions and browser functions.
+
+There are still more things I am planning to add, so this is just the beginning of the AstroTab project.
 
 ## Live Site
 
 https://astrotab.vercel.app/
 
-Built by Tanmay Pathe
+Made by Tanmay Pathe
