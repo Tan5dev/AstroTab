@@ -17,88 +17,228 @@ I started building AstroTab as a simple HTML, CSS and JavaScript project, but as
 Most of the project was built from scratch while experimenting with UI design, APIs, browser features, localStorage, Canvas, Web Audio API and responsive layouts.
 
 ## AstroTab Dashboard Features
+* ### Digital Clock & Greeting Engine
 
-* **Digital Clock & Greeting Engine**
-
-  * Real-time clock with dynamic AM/PM tracking.     ![AstroTab Screenshot](./assets/Time.png)
-  * 12-Hour and 24-Hour format toggling.                
-  * Time-based greetings that change between Morning, Afternoon, and Evening.
+<table>
+  <tr>
+    <td width="65%">
+      <ul>
+        <li>Real-time clock with dynamic AM/PM tracking.</li>
+        <li>12-Hour and 24-Hour format toggling.</li>
+        <li>Time-based greetings that change between Morning, Afternoon, and Evening.</li>
+      </ul>
+    </td>
+    <td width="35%" align="center">
+      <img src="./assets/Time.png" width="250">
+    </td>
+  </tr>
+</table>
 
   
-* **NASA APOD (Astronomy Picture of the Day)**
+* ### NASA APOD
 
-  * Daily astronomy images and video content fetched from NASA's APOD API.
-  * HD image viewing with an expanded modal containing the title, date, and description.
-  * Support for both image and video APOD content.
-  * Cached APOD data using `localStorage` to reduce unnecessary API requests.
-  * Fallback content and error handling for API failures and rate limits.
+<table>
+  <tr>
+    <td width="35%" align="center">
+      <img src="./assets/NASA_APOD.png" width="250">
+    </td>
+    <td width="65%">
+      <ul>
+        <li>Daily astronomy images and video content fetched from NASA's APOD API.</li>
+        <li>HD image viewing with an expanded modal.</li>
+        <li>Support for both image and video APOD content.</li>
+        <li>Cached APOD data using <code>localStorage</code>.</li>
+        <li>Fallback content and error handling for API failures and rate limits.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
-* **Quick Notes & Task Management**
+* ### Quick Notes & Task Management
 
-  * Add and remove notes directly from the dashboard.
-  * Persistent storage using `localStorage`.
-  * Pending and completed task states with interactive checkboxes.
-  * Completed tasks receive visual cross-out styling.
+<table>
+  <tr>
+    <td width="65%">
+      <ul>
+        <li>Add and remove notes directly from the dashboard.</li>
+        <li>Persistent storage using <code>localStorage</code>.</li>
+        <li>Pending and completed task states with interactive checkboxes.</li>
+        <li>Completed tasks receive visual cross-out styling.</li>
+      </ul>
+    </td>
+    <td width="35%" align="center">
+      <img src="./assets/Quick_Notes.png" width="250">
+    </td>
+  </tr>
+</table>
+  
+* ### Focus Timer & Stopwatch
 
-* **Focus Timer & Stopwatch**
+<table>
+  <tr>
+    <td width="35%" align="center">
+      <img src="./assets/NASA_APOD.png" width="250">
+    </td>
+    <td width="65%">
+      <ul>
+        <li>Pomodoro countdown mode for focused sessions.</li>
+        <li>Stopwatch mode for tracking elapsed time.</li>
+        <li>Support for both image and video APOD content.</li>
+        <li>Custom session durations from 1 to 180 minutes.</li>
+        <li>Adaptive time display for both short and long sessions.</li>
+        <li>Timer preferences saved using <code>localStorage</code>.
+        <li>Start, pause, reset, and mode switching controls.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
-  * Pomodoro countdown mode for focused sessions.
-  * Stopwatch mode for tracking elapsed time.
-  * Custom session durations from 1 to 180 minutes.
-  * Adaptive time display for both short and long sessions.
-  * Timer preferences saved using `localStorage`.
-  * Start, pause, reset, and mode switching controls.
+* ### Weather & Orbital Telemetry
 
-* **Weather & Orbital Telemetry**
+<table>
+  <tr>
+    <td width="65%">
+      <ul>
+        <li>Live weather information using the Open-Meteo API.</li>
+        <li>Current temperature and wind speed display.</li>
+        <li>Latitude and longitude orbital/location telemetry.</li>
+        <li>City search and geocoding modal for manually selecting locations.</li>
+        <li>Automatic location detection with fallback handling.</li>
+      </ul>
+    </td>
+    <td width="35%" align="center">
+      <img src="./assets/Quick_Notes.png" width="250">
+    </td>
+  </tr>
+</table>
 
-  * Live weather information using the Open-Meteo API.
-  * Current temperature and wind speed display.
-  * Latitude and longitude orbital/location telemetry.
-  * City search and geocoding modal for manually selecting locations.
-  * Automatic location detection with fallback handling.
+* ### Cosmic Soundscapes
 
-* **Cosmic Soundscapes**
+<table>
+  <tr>
+    <td width="35%" align="center">
+      <img src="./assets/NASA_APOD.png" width="250">
+    </td>
+    <td width="65%">
+      <ul>
+        <li>Browser-based ambient sound generation using the Web Audio API.</li>
+        <li>Cosmic and Rain sound profiles.</li>
+        <li>Start and pause controls.</li>
+        <li>Real-time volume adjustment with an inline slider.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
-  * Browser-based ambient sound generation using the Web Audio API.
-  * Cosmic and Rain sound profiles.
-  * Start and pause controls.
-  * Real-time volume adjustment with an inline slider.
+* ### Bookmark Shortcuts
 
-* **Bookmark Shortcuts**
+<table>
+  <tr>
+    <td width="65%">
+      <ul>
+        <li>Add custom website bookmarks through a glassmorphic modal.</li>
+        <li>Automatic <code>https://</code> formatting for links.</li>
+        <li>Website favicons for visual shortcuts.</li>
+        <li>Remove bookmarks instantly.</li>
+        <li>Persistent bookmark storage using <code>localStorage</code>.</li>
+      </ul>
+    </td>
+    <td width="35%" align="center">
+      <img src="./assets/Quick_Notes.png" width="250">
+    </td>
+  </tr>
+</table>
 
-  * Add custom website bookmarks through a glassmorphic modal.
-  * Automatic `https://` formatting for links.
-  * Website favicons for visual shortcuts.
-  * Remove bookmarks instantly.
-  * Persistent bookmark storage using `localStorage`.
+* ### Google Search & URL Launcher
 
-* **Google Search & URL Launcher**
+<table>
+  <tr>
+    <td width="35%" align="center">
+      <img src="./assets/NASA_APOD.png" width="250">
+    </td>
+    <td width="65%">
+      <ul>
+        <li>Integrated Google search directly from the dashboard.</li>
+        <li>Supports entering URLs for quick website access.</li>
+        <li>Centered search interface integrated into the main dashboard layout.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
-  * Integrated Google search directly from the dashboard.
-  * Supports entering URLs for quick website access.
-  * Centered search interface integrated into the main dashboard layout.
+* ### Bookmark Shortcuts
 
-* **Interactive Canvas Starfield**
+<table>
+  <tr>
+    <td width="65%">
+      <ul>
+        <li>Add custom website bookmarks through a glassmorphic modal.</li>
+        <li>Automatic <code>https://</code> formatting for links.</li>
+        <li>Website favicons for visual shortcuts.</li>
+        <li>Remove bookmarks instantly.</li>
+        <li>Persistent bookmark storage using <code>localStorage</code>.</li>
+      </ul>
+    </td>
+    <td width="35%" align="center">
+      <img src="./assets/Quick_Notes.png" width="250">
+    </td>
+  </tr>
+</table>
 
-  * Animated HTML5 Canvas starfield background.
-  * Twinkling and pulsing star particles.
-  * Adjustable star density using a live slider.
-  * Real-time canvas updates when changing the density.
+* ### Interactive Canvas Starfield
 
-* **Glassmorphism & Interface Customization**
+<table>
+  <tr>
+  <td width="35%" align="center">
+      <img src="./assets/Quick_Notes.png" width="250">
+    </td>
+    <td width="65%">
+      <ul>
+        <li>Animated HTML5 Canvas starfield background.</li>
+        <li>Twinkling and pulsing star particles.</li>
+        <li>Adjustable star density using a live slider.</li>
+        <li>Real-time canvas updates when changing the density.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
-  * Adjustable backdrop blur across dashboard cards.
-  * Live blur control for customizing the glassmorphism effect.
-  * Space-themed interface with responsive dashboard layout.
-  * Fixed navigation header for easier access while scrolling.
+* ### Glassmorphism & Interface Customization
 
-* **API Resiliency & Error Handling**
+<table>
+  <tr>
+    <td width="65%">
+      <ul>
+        <li>Adjustable backdrop blur across dashboard cards.</li>
+        <li>Live blur control for customizing the glassmorphism effect.</li>
+        <li>Space-themed interface with responsive dashboard layout.</li>
+        <li>Fixed navigation header for easier access while scrolling.</li>
+      </ul>
+    </td>
+    <td width="35%" align="center">
+      <img src="./assets/Quick_Notes.png" width="250">
+    </td>
+  </tr>
+</table>
 
-  * Protected initialization for major dashboard modules.
-  * Handles NASA API rate limits and authentication errors.
-  * Fallback states when external APIs are unavailable.
-  * APOD support for different media types.
-  * Environment variables used for API configuration.
+* ### API Resiliency & Error Handling
+
+<table>
+  <tr>
+  <td width="35%" align="center">
+      <img src="./assets/Quick_Notes.png" width="250">
+    </td>
+    <td width="65%">
+      <ul>
+        <li>Protected initialization for major dashboard modules.</li>
+        <li>Handles NASA API rate limits and authentication errors.</li>
+        <li>Fallback states when external APIs are unavailable.</li>
+        <li>APOD support for different media types.</li>
+        <li>Environment variables used for API configuration.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 ## AI Usage
 
