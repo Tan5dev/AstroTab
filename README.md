@@ -20,10 +20,11 @@ Most of the project was built from scratch while experimenting with UI design, A
 
 * **Digital Clock & Greeting Engine**
 
-  * Real-time clock with dynamic AM/PM tracking.
-  * 12-Hour and 24-Hour format toggling.
+  * Real-time clock with dynamic AM/PM tracking.     ![AstroTab Screenshot](./assets/Time.png)
+  * 12-Hour and 24-Hour format toggling.                
   * Time-based greetings that change between Morning, Afternoon, and Evening.
 
+  
 * **NASA APOD (Astronomy Picture of the Day)**
 
   * Daily astronomy images and video content fetched from NASA's APOD API.
