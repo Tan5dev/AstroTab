@@ -1,175 +1,64 @@
-# AstroTab
+# Astronomy — NASA APOD New Tab Page
 
-AstroTab is my space themed productivity dashboard with some features that I wanted to use while studying.
+A custom new-tab page that fetches "NASA's Astronomy Picture of the Day" and wraps it in a full dashboard -- live clock, search, weather, shortcuts, todos, notes, and a focus timer. Built with Vite + vanilla JavaScript.
 
-![AstroTab Screenshot](./assets/Main.png)
-
-The goal was to make a dashboard similar to a small space command while being functional for day to day use.
-
-It features a clock, Astronomy Picture of the Day by NASA, weather and orbital telemetry, quick notes and bookmarks, Google search bar, ambient soundscapes and a focus timer.
-
-AstroTab uses NASA's APOD API for the astronomy part and the Open-Meteo API for the weather and geocoding. I've used `localStorage` to keep certain preferences and data for the dashboard.
-
-It started as a simple project made by HTML, CSS and JavaScript but as the project grew, I transfered it to Vite for easier organisation.
-
-It features most things that I've made myself while experimenting with UI design, APIs, browser tools, localStorage, Canvas, Web Audio API and responsive design.
+> Built for [Hack Club Stardance](https://stardance.hackclub.com) — Mission: "Give Your Website a Pulse"
 
 ## Features
 
-### Digital Clock & Greeting Engine
-
-Real-time clock with AM/PM tracking.
-
-Toggle for 12-hour and 24-hour format.
-
-Time-based greetings that changes between Morning, Afternoon and Evening.
-
-![Clock](./assets/Time.png)
-
-### NASA APOD
-
-Daily astronomy content fetched from NASA's APOD API.
-
-Support for both image and video APOD.
-
-HD view for images with an expanded modal.
-
-Cached APOD data using `localStorage`.
-
-Fallback content and error handling for APOD API failures and rate limits.
-
-![NASA APOD](./assets/NASA_APOD.png)
-
-### Quick Notes & Task Management
-
-Adding and removing tasks from the dashboard.
-
-Persistence using `localStorage`.
-
-Task states with checkboxes for pending and completed tasks.
-
-Cross-out styling for completed tasks.
-
-![Quick Notes](./assets/Quick_Notes.png)
-
-### Focus Timer & Stopwatch
-
-Pomodoro countdown mode for focus sessions.
-
-Stopwatch mode for measuring time.
-
-Session duration customisation from 1 to 180 minutes.
-
-Time display that adapts to short and long sessions.
-
-Timer preferences using `localStorage`.
-
-Start, pause, reset and mode buttons.
-
-![Focus Timer](./assets/Promodo_Timer.png)
-
-### Weather & Orbital Telemetry
-
-Live weather information using the Open-Meteo API.
-
-Current temperature and wind speed display.
-
-Latitude and longitude location telemetry.
-
-City search and geocoding modal for manual location choosing.
-
-Automatic location detection fallback.
-
-![Telemetry](./assets/Telemetry.png)
-
-### Cosmic Soundscapes
-
-Browser-based ambient sound generation using the Web Audio API.
-
-Cosmic and Rain sound profiles.
-
-Start and pause controls.
-
-Inline volume control with a slider.
-
-![Soundscapes](./assets/Sound.png)
-
-### Bookmark Shortcuts
-
-Add custom website bookmarks using a glassmorphic modal.
-
-Auto-formatted `https://` links.
-
-Website favicons for shortcuts.
-
-Removing bookmarks instantly.
-
-Bookmark persistence using `localStorage`.
-
-![Bookmarks](./assets/Header.png)
-
-### Google Search & URL Launcher
-
-Integrated Google search system on the dashboard.
-
-Entering URLs for quick website access.
-
-Centred search interface within the dashboard.
-
-![Search Bar](./assets/SearchBar.png)
-
-### Interactive Canvas Starfield
-
-Animated HTML5 Canvas starfield background.
-
-Twinkling and pulsing star particles.
-
-Star density customisation using a live slider.
-
-Live canvas updates when changing density.
-
-![Starfield](./assets/Starfield.png)
-
-### Glassmorphism & Interface Customization
-
-Adjust backdrop blur for all cards.
-
-Live blur customisation for glassmorphism.
-
-Space themed interface and responsive dashboard layout.
-
-Fixed navigation header for easier scrolling access.
-
-![Interface](./assets/Header.png)
-
-### API Resiliency & Error Handling
-
-Protected initialisations for the main dashboard modules.
-
-Handling NASA API rate limits and authentication errors.
-
-Fallback states when external APIs are unreachable.
-
-APOD support for different media types.
-
-Environment variables for API configuration.
-
-## AI Usage
-
-I have used GitHub Copilot for some minor assistance, mostly for code autocomplete and suggestions while developing the project.
-
-I have also used AI occasionally outside of the project when working with APIs and some concepts.
-
-## Development
-
-This is the first shipped version of AstroTab.
-
-I started from the project idea of learning how to build a astronomy-themed dashboard and slowly added on features that I found useful. Some parts of the dashboard have changed significantly as I worked on the prototype and experimented with the APIs, interactions and browser functions.
-
-There are still more things I am planning to add, so this is just the beginning of the AstroTab project.
-
-## Live Site
-
-https://astrotab.vercel.app/
-
-Made by Tanmay Pathe
+1 NASA APOD -- fetches the Astronomy Picture of the Day from the official API: title, image (or video/YouTube embed), and explanation, updated automatically every day
+2 Live clock & date --The  big glowing Nunito clock with an hour-based greeting looks intercative and futuristic.
+3 Smart search bar -- URLs, domains, or queries; "Ctrl+K" focuses it.Now even the search bar is creative
+4 Speed dial -- editable shortcuts with emoji icons (stored in "localStorage")
+5 Weather widget -- Open-Meteo API, no key needed, cached for 10 minutes.Pretty easy to configure.
+6 To-do list -- add/check/delete/clear tasks ("Ctrl+N" to add)
+7 Notes panel -- It has a auto-saving scratchpad
+8 Focus timer -- It includes a pomodoro ring with 25/45/60 min modes and is combined with a browser notification
+9 Starfield -- canvas-based twinkling stars and random shooting stars
+10 Animations -- orbit loading animation, staggered content reveals, hover zoom on the image
+11 Keyboard shortcuts -- 'Esc' closes panels, 'Ctrl+K' search, 'Ctrl+N' todo
+
+How to Get started
+
+Step 1. Clone the repo
+Step 2. Use the command in the respective terminal(windows,linux or IOS) npm install.
+Step 3. Get a free key at [api.nasa.gov](https://api.nasa.gov),it's emailed to you instantly once you give it a email address
+Step 4. Copy ".env.example" to ".env" and put your key in it:
+   
+   VITE_NASA_API_KEY=yourkeyhere
+   
+Step 5. run the command `npm run dev` and open the URL shown (usually http://localhost:5173 or localhost:5174)
+
+Note-Never open "index.html" directly — Vite's module system and ".env" only work through the dev server.
+
+ Deploying to GitHub Pages
+
+Step 1. Create a repo named exactly `apod` (matches `vite.config.js` base path)
+Step 2. initialize your git repositort,before that  add remote, then commit, push
+Step 3.Importanat** Add your key as a repo secret: Settings => Secrets and variables => Actions => VITE_NASA_API_KEY
+Step 4. Settings => Pages => Source: GitHub Actions
+Step 5. Your site lives at 'https://<username>.github.io/apod/'
+
+Use it as a real new-tab page with the [Custom New Tab URL](https://chromewebstore.google.com/detail/custom-new-tab-url/mmjbdbjnoablecnkagjmlgedomnlcbni) extension.
+
+Structure of this website
+apod
+├── index.html                  # the basic page structure
+├── vite.config.js              # base path for GitHub Pages
+├── .env.example                # provides the template for your API key
+├── .github/workflows/deploy.yml #allows you to auto-deploy on push
+└── src/
+   ├── main.js                 # all widgets and the  APOD logic
+    ├── stars.js                # canvas starfield with  shooting stars
+    └── style.css               # space theme and the futuristic animations
+
+ Tech Stack of this page 
+
+  [Vite](https://vitejs.dev) — build tool + dev server
+  [NASA APOD API](https://api.nasa.gov) — picture of the day
+  [Open-Meteo](https://open-meteo.com) — weather, free and keyless
+  [Google Fonts](https://fonts.google.com) — Orbitron + Black Ops One
+  No frameworks, no UI libraries are used it was raw coding 
+
+ License
+MIT

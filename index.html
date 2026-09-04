@@ -1,205 +1,113 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AstroTab Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-
-<body>
-  <canvas id="starfield"></canvas>
-  
-  <header class="top-nav">
-    <div class="brand">
-      <span class="pulse-dot"></span>
-      <span class="brand-name">ASTRO // OS</span>
-    </div>
-    
-    <div class="nav-center">
-      <div class="quick-links" id="bookmarks-bar"></div>
-      <button id="add-bookmark-btn" class="shortcut-btn add-btn" title="Add Bookmark" data-modal="bm-modal"><i class="fas fa-plus"></i></button>
-    </div>
-
-    <div class="theme-controls">
-      <button id="theme-btn" class="shortcut-btn" title="Customize Theme"><i class="fas fa-sliders"></i></button>
-      <div id="theme-popover" class="theme-popover">
-        <label>Blur Intensity</label>
-        <input type="range" id="blur-slider" min="0" max="30" value="12" oninput="document.documentElement.style.setProperty('--blur-val', this.value + 'px')" />
-        <label>Star Density</label>
-        <input type="range" id="stars-slider" min="50" max="400" value="150" />
-      </div>
-    </div>
-  </header>
-
-  <div class="dashboard-container">
-
-    <div class="dash-col">
-      <div class="card" id="clock-card">
-        <div class="clock-header">
-          <h1 class="clock" id="clock">00:00:00</h1>
-          <button id="format-toggle" class="toggle-btn">12H</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <title>AstroTab</title>
+  </head>
+  <body>
+    <main class="layout">
+      <header class="topbar">
+        <div class="topbar-left">
+          <span class="pulse-logo">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            AstroTab
+          </span>
         </div>
-        <p class="greeting" id="greeting">Initializing...</p>
-      </div>
-
-      <div class="card telemetry-card">
-        <div class="card-header" style="display:flex; justify-space-between; align-items:center;">
-          <span class="badge"><i class="fas fa-satellite"></i> TELEMETRY</span>
-          <button id="loc-picker-btn" class="icon-btn" title="Change Location"><i class="fas fa-location-dot"></i></button>
-        </div>
-        <div class="sub-text" id="location-name" style="margin-bottom: 0.5rem;">Scanning Location...</div>
-        <div class="telemetry-grid">
-          <div class="telemetry-item">
-            <i id="weather-icon" class="fas fa-cloud-sun weather-i"></i>
-            <div>
-              <div id="weather-temp" class="stat-value">--°C</div>
-              <div id="weather-desc" class="stat-label">Detecting...</div>
-            </div>
+        <div class="topbar-right">
+          <div class="weather" id="weather" title="Weather">
+            <span class="weather-icon" id="weatherIcon">…</span>
+            <span class="weather-temp" id="weatherTemp">--°</span>
           </div>
-          <div class="telemetry-item alt-item">
-            <i class="fas fa-compass weather-i"></i>
-            <div>
-              <div id="weather-coords" class="stat-value small-text">0.00° N, 0.00° E</div>
-              <div class="stat-label">ORBITAL COORDS</div>
-            </div>
-          </div>
+          <button class="icon-btn" id="todoToggle" title="Todos">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          </button>
+          <button class="icon-btn" id="notesToggle" title="Notes">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          </button>
+          <button class="icon-btn" id="settingsToggle" title="Edit shortcuts">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+          </button>
         </div>
-      </div>
+      </header>
 
-      <div class="card sound-card">
-        <div class="card-header">
-          <span class="badge"><i class="fas fa-headphones"></i> SOUNDSCAPES</span>
-        </div>
-        <div class="sound-controls">
-          <select id="sound-select" class="sound-select">
-            <option value="cosmic">Cosmic Hum</option>
-            <option value="rain">Deep Space Rain</option>
-            <option value="lofi">Lo-Fi Radio</option>
-          </select>
-          <button id="sound-toggle" class="sound-btn"><i class="fas fa-play"></i></button>
-        </div>
-        <div class="volume-wrapper">
-          <i class="fas fa-volume-low vol-icon"></i>
-          <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" class="volume-slider">
-          <i class="fas fa-volume-high vol-icon"></i>
-        </div>
-      </div>
-    </div>
+      <section class="center">
+        <div class="greeting" id="greeting">Good evening</div>
+        <div class="clock" id="clock">00:00:00</div>
+        <div class="date" id="date">—</div>
 
-    <div class="dash-col center-col">
-      <div class="card search-card">
-        <form action="https://www.google.com/search" method="GET" target="_blank" class="search-form">
-          <div class="input-wrapper">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" name="q" placeholder="Search Google or type a URL..." required autocomplete="off" />
-            <span class="hotkey-badge">/</span>
-          </div>
-          <button type="submit">Search</button>
+        <form class="search" id="searchForm">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="searchInput" placeholder="Search the web or type a URL…" autocomplete="off" spellcheck="false">
         </form>
-      </div>
 
-      <div class="card apod-card" id="nasa-card">
-        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-          <span class="badge">NASA APOD</span>
-          <span id="apod-date" class="date-tag">Today</span>
+        <div class="speed-dial" id="speedDial"></div>
+      </section>
+
+      <section class="apod" id="app"></section>
+    </main>
+
+    <aside class="panel panel-todos" id="todoPanel">
+      <div class="panel-header">
+        <h2>Todos</h2>
+        <button class="panel-close" data-close="todoPanel">×</button>
+      </div>
+      <form id="todoForm" class="panel-form">
+        <input type="text" id="todoInput" placeholder="Add a task…" autocomplete="off">
+        <button type="submit" class="panel-add">+</button>
+      </form>
+      <ul class="todo-list" id="todoList"></ul>
+      <div class="panel-footer">
+        <span id="todoCount">0 tasks</span>
+        <button id="todoClear" class="link-btn">clear done</button>
+      </div> 
+    </aside>
+
+    <aside class="panel panel-notes" id="notesPanel">
+      <div class="panel-header">
+        <h2>Notes</h2>
+        <button class="panel-close" data-close="notesPanel">×</button>
+      </div>
+      <textarea id="notesArea" placeholder="Write something…" spellcheck="false"></textarea>
+      <div class="panel-footer">
+        <span id="notesSaved">saved</span>
+      </div>
+    </aside>
+
+    <aside class="panel panel-settings" id="settingsPanel">
+      <div class="panel-header">
+        <h2>Shortcuts</h2>
+        <button class="panel-close" data-close="settingsPanel">×</button>
+      </div>
+      <div id="shortcutEditor"></div>
+      <button id="addShortcut" class="panel-add wide">+ add shortcut</button>
+      <div class="panel-footer">
+        <span>Stored in your browser</span>
+      </div>
+    </aside>
+
+    <div class="focus" id="focus">
+      <div class="focus-ring">
+        <svg viewBox="0 0 120 120" class="focus-svg">
+          <circle class="focus-track" cx="60" cy="60" r="52"></circle>
+          <circle class="focus-progress" id="focusProgress" cx="60" cy="60" r="52"></circle>
+        </svg>
+        <div class="focus-center">
+          <span class="focus-time" id="focusTime">25:00</span>
+          <span class="focus-label" id="focusLabel">start</span>
         </div>
-        <h2 id="apod-title">Fetching space data...</h2>
-        <div class="image-wrapper" id="apod-trigger" style="cursor: pointer;">
-          <img id="apod-img" src="" alt="Astronomy Picture of the Day" style="display: none;" />
-          <div class="expand-hint"><i class="fas fa-expand"></i> Click to Expand HD</div>
-        </div>
-        <p id="apod-desc" class="apod-desc"></p>
+      </div>
+      <button class="focus-btn" id="focusBtn">Start</button>
+      <div class="focus-modes" id="focusModes">
+        <button data-min="25" class="focus-mode active">25</button>
+        <button data-min="45" class="focus-mode">45</button>
+        <button data-min="60" class="focus-mode">60</button>
       </div>
     </div>
 
-    <div class="dash-col">
-      
-<div class="card timer-card">
-  <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-    <span class="badge" id="timer-badge"><i class="fas fa-stopwatch"></i> FOCUS TIMER</span>
-    <div class="timer-mode-controls">
-      <button id="mode-pomo-btn" class="icon-btn active-mode" title="Pomodoro Mode"><i class="fas fa-clock"></i></button>
-      <button id="mode-sw-btn" class="icon-btn" title="Stopwatch Mode"><i class="fas fa-stopwatch-20"></i></button>
-      <button id="timer-settings-toggle" class="icon-btn" title="Configure Timer"><i class="fas fa-gear"></i></button>
-    </div>
-  </div>
-
-  <div class="timer-display" id="timer-display">25:00</div>
-
-  <div id="timer-settings-panel" class="timer-settings-panel" style="display: none;">
-    <div class="setting-row">
-      <label for="custom-pomo-min">Focus Time (mins):</label>
-      <input type="number" id="custom-pomo-min" min="1" max="180" value="25" />
-    </div>
-    <button id="save-timer-settings" class="timer-btn alt">Apply Settings</button>
-  </div>
-
-  <div class="timer-controls">
-    <button id="timer-start" class="timer-btn"><i class="fas fa-play"></i></button>
-    <button id="timer-reset" class="timer-btn alt"><i class="fas fa-rotate-left"></i></button>
-  </div>
-</div>
-
-      <div class="card todo-card" id="notes-card">
-        <h3>TODO Manager</h3>
-        <div class="todo-input-group">
-          <input type="text" id="todo-input" placeholder="Add a Quick Task..." autocomplete="off"/>
-          <button id="todo-add">+</button>
-        </div>
-        <ul id="todo-list" class="todo-list"></ul>  
-        <div class="task-section">
-        <div class="task-section-title">Pending</div>
-        <ul id="pending-list" class="todo-list"></ul>
-      </div>
-
-      <div class="task-section" style="margin-top: 1rem;">
-          <div class="task-section-title">Completed</div>
-          <ul id="completed-list" class="todo-list"></ul>
-      </div>    
-      </div>
-      
-    </div>
-
-  </div>
-
-  <div id="loc-modal" class="modal">
-    <div class="modal-card">
-      <span class="modal-close" id="loc-modal-close">&times;</span>
-      <h3>Select Orbit Location</h3>
-      <div class="modal-form">
-        <input type="text" id="loc-search-input" placeholder="Enter City Name (e.g. Tokyo, London)" autocomplete="off" />
-        <button id="loc-search-btn">Set Location</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="bm-modal" class="modal">
-    <div class="modal-card">
-      <span class="modal-close" id="bm-modal-close">&times;</span>
-      <h3 id="bm-modal-title">Add Bookmark</h3>
-      <div class="modal-form">
-        <input type="text" id="bm-name-input" placeholder="Bookmark Name (e.g., GitHub)" autocomplete="off" />
-        <input type="url" id="bm-url-input" placeholder="URL (e.g., https://github.com)" autocomplete="off" />
-        <button id="bm-save-btn">Save Bookmark</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="apod-modal" class="modal">
-    <span class="modal-close" id="modal-close">&times;</span>
-    <img class="modal-content" id="modal-img" />
-    <div class="modal-caption">
-      <h2 id="modal-title"></h2>
-      <p id="modal-desc"></p>
-    </div>
-  </div>
-
-  <script type="module" src="/script.js"></script>
-  <script src="script.js"></script>
-</body>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>

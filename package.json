@@ -1,5 +1,5 @@
 {
-  "name": "astrotab",
+  "name": "apod",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,9 +9,6 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^8.2.2"
-  },
-  "dependencies": {
-    "canvas-confetti": "^1.9.4"
+    "vite": "^8.2.0"
   }
 }
