@@ -136,6 +136,7 @@ function renderShortcuts() {
       renderShortcuts();
       renderShortcutEditor();
     });
+    
 
     tileContainer.append(a, delBtn);
     sd.appendChild(tileContainer);
